@@ -9,6 +9,7 @@ const generateId = () => Math.random().toString(36).substring(2, 15) + Math.rand
 const createDefaultArticle = (): Article => ({
   id: generateId(),
   status: 'draft',
+  language: 'TR',
   metadata: {
     titleTurkish: '',
     titleEnglish: '',
@@ -19,6 +20,7 @@ const createDefaultArticle = (): Article => ({
     issue: '',
     year: new Date().getFullYear().toString(),
     pages: '',
+    citation: '',
   },
   abstract: {
     abstractEnglish: '',
@@ -77,6 +79,14 @@ export function useArticle() {
     setArticle(prev => ({
       ...prev,
       metadata: { ...prev.metadata, ...updates },
+      updatedAt: new Date().toISOString(),
+    }));
+  }, []);
+
+  const setLanguage = useCallback((language: 'TR' | 'EN') => {
+    setArticle(prev => ({
+      ...prev,
+      language,
       updatedAt: new Date().toISOString(),
     }));
   }, []);
@@ -357,6 +367,7 @@ export function useArticle() {
     setArticle,
     validationErrors,
     isSaving,
+    setLanguage,
     updateMetadata,
     updateAbstract,
     updateHistory,

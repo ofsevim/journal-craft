@@ -296,6 +296,42 @@ export function MetadataEditor({
           </div>
         </CardContent>
       </Card>
+
+      {/* Citation / Atıf */}
+      <Card className="section-card">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-base font-semibold text-section-header">Atıf / To Cite</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <Label className="form-label">Atıf Metni</Label>
+            <Input
+              value={metadata.citation}
+              onChange={(e) => onUpdateMetadata({ citation: e.target.value })}
+              placeholder="Yazar, A. (2024). Makale Başlığı. Dergi Adı, 12(3), 1-25."
+            />
+            <p className="form-hint mt-1">Bu makaleye yapılacak atıf formatı (APA, vb.)</p>
+          </div>
+
+          {/* Sorumlu Yazar Bilgisi - Otomatik */}
+          {metadata.authors.some(a => a.isCorresponding) && (
+            <div className="bg-muted/50 p-3 rounded-lg border">
+              <p className="text-xs font-medium text-muted-foreground mb-1">İletişim / Contact</p>
+              {metadata.authors.filter(a => a.isCorresponding).map(author => (
+                <div key={author.id} className="flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-[hsl(var(--scd-blue))]" />
+                  <span className="text-sm font-medium">{author.name}</span>
+                  {author.email && (
+                    <a href={`mailto:${author.email}`} className="text-sm text-[hsl(var(--scd-blue))] hover:underline">
+                      {author.email}
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

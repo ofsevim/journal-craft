@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -8,7 +8,10 @@ import {
   AlertCircle,
   Save,
   RotateCcw,
-  Settings
+  Settings,
+  Loader2,
+  FileCode,
+  Globe
 } from 'lucide-react';
 import { Article, ValidationError } from '@/types/article';
 import { JOURNAL_CONFIG } from '@/config/journal';
@@ -17,7 +20,22 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { toast } from 'sonner';
+import { compileArticleToPdf, downloadBlob, checkApiHealth } from '@/api/latex';
 // @ts-ignore - html2pdf types can be tricky
 import html2pdf from 'html2pdf.js';
 
@@ -26,18 +44,20 @@ interface EditorToolbarProps {
   onValidate: () => ValidationError[];
   validationErrors: ValidationError[];
   onReset: () => void;
+  onLanguageChange: (language: 'TR' | 'EN') => void;
 }
 
-export function EditorToolbar({ article, onValidate, validationErrors, onReset }: EditorToolbarProps) {
+export function EditorToolbar({ article, onValidate, validationErrors, onReset, onLanguageChange }: EditorToolbarProps) {
+  const [isCompiling, setIsCompiling] = useState(false);
   const errorCount = validationErrors.filter(e => e.severity === 'error').length;
   const warningCount = validationErrors.filter(e => e.severity === 'warning').length;
 
   const handleSave = () => {
-    // LocalStorage zaten useArticle içinde otomatik kaydediyor
     toast.success('Değişiklikler tarayıcıya kaydedildi');
   };
 
-  const handleDownloadPdf = () => {
+  // Quick HTML-based PDF (existing)
+  const handleQuickPdf = () => {
     const element = document.getElementById('article-pdf-content');
     if (!element) {
       toast.error('Önizleme alanı bulunamadı');
@@ -57,6 +77,33 @@ export function EditorToolbar({ article, onValidate, validationErrors, onReset }
       success: 'PDF başarıyla indirildi',
       error: 'PDF oluşturulurken bir hata oluştu'
     });
+  };
+
+  // Real LaTeX PDF (new)
+  const handleLatexPdf = async () => {
+    setIsCompiling(true);
+
+    try {
+      // Check if backend is running
+      const isHealthy = await checkApiHealth();
+      if (!isHealthy) {
+        toast.error('LaTeX sunucusu çalışmıyor. Lütfen "npm run server" komutunu çalıştırın.');
+        return;
+      }
+
+      toast.loading('LaTeX derleniyor...', { id: 'latex-compile' });
+
+      const pdfBlob = await compileArticleToPdf(article);
+      const filename = `${article.metadata.titleTurkish || 'makale'}.pdf`;
+      downloadBlob(pdfBlob, filename);
+
+      toast.success('PDF başarıyla oluşturuldu ve indirildi!', { id: 'latex-compile' });
+    } catch (error: any) {
+      console.error('LaTeX compilation error:', error);
+      toast.error(`Derleme hatası: ${error.message}`, { id: 'latex-compile' });
+    } finally {
+      setIsCompiling(false);
+    }
   };
 
   const getStatusBadge = () => {
@@ -90,6 +137,22 @@ export function EditorToolbar({ article, onValidate, validationErrors, onReset }
         <div className="h-6 w-px bg-border" />
 
         {getStatusBadge()}
+
+        <div className="h-6 w-px bg-border" />
+
+        {/* Language Selector */}
+        <div className="flex items-center gap-1.5">
+          <Globe className="w-4 h-4 text-muted-foreground" />
+          <Select value={article.language || 'TR'} onValueChange={(v) => onLanguageChange(v as 'TR' | 'EN')}>
+            <SelectTrigger className="w-[70px] h-7 text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="TR">TR</SelectItem>
+              <SelectItem value="EN">EN</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
         {(errorCount > 0 || warningCount > 0) && (
           <>
@@ -144,10 +207,35 @@ export function EditorToolbar({ article, onValidate, validationErrors, onReset }
 
         <div className="h-6 w-px bg-border mx-1" />
 
-        <Button variant="outline" size="sm" onClick={handleDownloadPdf}>
-          <Download className="w-4 h-4 mr-1.5" />
-          PDF İndir
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="default" size="sm" disabled={isCompiling}>
+              {isCompiling ? (
+                <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
+              ) : (
+                <Download className="w-4 h-4 mr-1.5" />
+              )}
+              PDF İndir
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={handleLatexPdf} disabled={isCompiling}>
+              <FileCode className="w-4 h-4 mr-2" />
+              <div>
+                <div className="font-medium">LaTeX PDF (Önerilen)</div>
+                <div className="text-xs text-muted-foreground">scd.cls formatında gerçek PDF</div>
+              </div>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleQuickPdf}>
+              <FileText className="w-4 h-4 mr-2" />
+              <div>
+                <div className="font-medium">Hızlı Önizleme PDF</div>
+                <div className="text-xs text-muted-foreground">HTML'den dönüştürme</div>
+              </div>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
 
         <Button variant="ghost" size="icon" className="w-8 h-8">
           <Settings className="w-4 h-4" />

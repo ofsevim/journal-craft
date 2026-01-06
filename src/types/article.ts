@@ -19,6 +19,7 @@ export interface ArticleMetadata {
   issue: string;
   year: string;
   pages: string;
+  citation: string;
 }
 
 export interface AbstractSection {
@@ -70,6 +71,7 @@ export interface ArticleSubsection {
 export interface Article {
   id: string;
   status: 'draft' | 'review' | 'approved' | 'published';
+  language: 'TR' | 'EN';
   metadata: ArticleMetadata;
   abstract: AbstractSection;
   history: ArticleHistory;

@@ -18,6 +18,7 @@ export function EditorLayout() {
         onValidate={articleHook.validate}
         validationErrors={articleHook.validationErrors}
         onReset={articleHook.resetArticle}
+        onLanguageChange={articleHook.setLanguage}
       />
 
       <div className="flex-1 flex overflow-hidden">
