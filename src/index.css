@@ -2,12 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Academic Article Editor - Design System
-   Inspired by Overleaf meets modern scholarly publishing
-   All colors in HSL format
+/* SCD Academic Article Editor - Design System
+   Based on Sosyal Çalışma Dergisi (scd.cls) Template
+   Colors and typography matching the official journal style
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Charter:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap');
 
 @layer base {
   :root {
@@ -23,8 +23,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
     
-    /* Primary - Deep scholarly navy */
-    --primary: 222 47% 20%;
+    /* Primary - SCD Blue (0, 51, 102) = 210 100% 20% */
+    --primary: 210 100% 20%;
     --primary-foreground: 210 40% 98%;
     
     /* Secondary - Warm paper tone */
@@ -33,11 +33,11 @@
     
     /* Muted surfaces */
     --muted: 210 20% 94%;
-    --muted-foreground: 215 16% 47%;
+    --muted-foreground: 0 0% 31%; /* SCDTextGray (80, 80, 80) */
     
-    /* Accent - Academic gold/amber */
-    --accent: 38 92% 50%;
-    --accent-foreground: 222 47% 11%;
+    /* Accent - SCD Red/Burgundy (145, 30, 30) = 0 66% 34% */
+    --accent: 0 66% 34%;
+    --accent-foreground: 0 0% 100%;
     
     /* Destructive */
     --destructive: 0 84% 60%;
@@ -54,9 +54,17 @@
     /* Borders and inputs */
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 222 47% 20%;
+    --ring: 210 100% 20%;
     
     --radius: 0.5rem;
+    
+    /* SCD specific tokens */
+    --scd-blue: 210 100% 20%;           /* RGB(0, 51, 102) */
+    --scd-red: 0 66% 34%;               /* RGB(145, 30, 30) */
+    --scd-light-blue: 225 47% 94%;      /* RGB(232, 237, 248) */
+    --scd-text-gray: 0 0% 31%;          /* RGB(80, 80, 80) */
+    --scd-dark-davy: 216 7% 19%;        /* RGB(44, 47, 51) */
+    --scd-citation-bg: 33 100% 95%;     /* RGB(255, 245, 230) */
     
     /* Editor-specific tokens */
     --editor-bg: 0 0% 100%;
@@ -66,18 +74,18 @@
     --preview-paper: 0 0% 100%;
     
     /* Section colors */
-    --section-header: 222 47% 15%;
-    --section-border: 38 60% 70%;
+    --section-header: 210 100% 20%;
+    --section-border: 0 66% 34%;
     
     /* Sidebar */
-    --sidebar-background: 222 47% 11%;
+    --sidebar-background: 210 100% 15%;
     --sidebar-foreground: 210 40% 90%;
-    --sidebar-primary: 38 92% 50%;
-    --sidebar-primary-foreground: 222 47% 11%;
-    --sidebar-accent: 222 47% 18%;
+    --sidebar-primary: 0 66% 34%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 100% 22%;
     --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 222 47% 18%;
-    --sidebar-ring: 38 92% 50%;
+    --sidebar-border: 210 100% 22%;
+    --sidebar-ring: 0 66% 34%;
   }
 
   .dark {
@@ -90,8 +98,8 @@
     --popover: 222 47% 11%;
     --popover-foreground: 210 40% 98%;
     
-    --primary: 38 92% 50%;
-    --primary-foreground: 222 47% 11%;
+    --primary: 210 100% 40%;
+    --primary-foreground: 0 0% 100%;
     
     --secondary: 222 47% 15%;
     --secondary-foreground: 210 40% 98%;
@@ -99,15 +107,22 @@
     --muted: 222 47% 15%;
     --muted-foreground: 215 20% 65%;
     
-    --accent: 38 92% 50%;
-    --accent-foreground: 222 47% 11%;
+    --accent: 0 66% 45%;
+    --accent-foreground: 0 0% 100%;
     
     --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
     
     --border: 222 47% 18%;
     --input: 222 47% 18%;
-    --ring: 38 92% 50%;
+    --ring: 210 100% 40%;
+    
+    --scd-blue: 210 100% 50%;
+    --scd-red: 0 66% 50%;
+    --scd-light-blue: 225 30% 20%;
+    --scd-text-gray: 0 0% 60%;
+    --scd-dark-davy: 210 10% 90%;
+    --scd-citation-bg: 33 40% 15%;
     
     --editor-bg: 222 47% 11%;
     --editor-border: 222 47% 18%;
@@ -115,17 +130,17 @@
     --preview-bg: 222 47% 6%;
     --preview-paper: 222 47% 11%;
     
-    --section-header: 210 40% 98%;
-    --section-border: 38 60% 50%;
+    --section-header: 210 100% 60%;
+    --section-border: 0 66% 50%;
     
     --sidebar-background: 222 47% 6%;
     --sidebar-foreground: 210 40% 90%;
-    --sidebar-primary: 38 92% 50%;
-    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-primary: 0 66% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 222 47% 12%;
     --sidebar-accent-foreground: 210 40% 98%;
     --sidebar-border: 222 47% 12%;
-    --sidebar-ring: 38 92% 50%;
+    --sidebar-ring: 0 66% 50%;
   }
 }
 
@@ -136,12 +151,24 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
   }
   
-  /* Academic content uses Crimson Pro */
-  .font-academic {
-    font-family: 'Crimson Pro', Georgia, serif;
+  /* SCD Typography matching scd.cls */
+  .font-scd-title {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  
+  .font-scd-body {
+    font-family: Charter, 'Bitstream Charter', Georgia, serif;
+  }
+  
+  .font-scd-journal {
+    font-family: 'Hoefler Text', 'Times New Roman', Georgia, serif;
+  }
+  
+  .font-scd-meta {
+    font-family: Helvetica, 'Helvetica Neue', sans-serif;
   }
   
   /* Smooth scrolling */
