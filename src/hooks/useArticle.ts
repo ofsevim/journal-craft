@@ -21,6 +21,7 @@ const createDefaultArticle = (): Article => ({
     year: new Date().getFullYear().toString(),
     pages: '',
     citation: '',
+    contactText: '',
   },
   abstract: {
     abstractEnglish: '',

@@ -20,6 +20,7 @@ export interface ArticleMetadata {
   year: string;
   pages: string;
   citation: string;
+  contactText: string;
 }
 
 export interface AbstractSection {

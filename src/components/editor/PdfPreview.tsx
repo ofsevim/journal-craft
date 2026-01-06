@@ -167,43 +167,47 @@ export function PdfPreview({ article }: PdfPreviewProps) {
             style={{ padding: '2.6cm 1.7cm 3.2cm 1.7cm' }}>
 
             {/* ===== FIRST PAGE HEADER ===== */}
-            <div className="relative mb-6">
+            <div className="relative mb-8 h-[2.5cm]">
               {/* Journal Name - Hoefler Text style */}
-              <h1 className="font-scd-journal text-[26px] font-bold text-[hsl(var(--scd-blue))] leading-tight">
-                {JOURNAL_CONFIG.name}
-              </h1>
+              <div className="absolute top-0 left-0">
+                <h1 className="font-scd-journal text-[26pt] font-bold text-[hsl(var(--scd-blue))] leading-tight">
+                  Sosyal Çalışma Dergisi
+                </h1>
+              </div>
 
-              {/* Red horizontal line */}
-              <div className="absolute top-[2.1cm] right-0 left-[10cm] h-[2px] bg-[hsl(var(--scd-red))]" />
+              {/* Red horizontal line - Aligned with scd.cls TikZ */}
+              <div className="absolute top-[2.1cm] right-0 left-[10.3cm] h-[2px] bg-[hsl(var(--scd-red))]" />
 
-              {/* Article Type Box */}
-              <div className="absolute top-0 right-0 bg-[hsl(var(--scd-red))] text-white px-3 py-1 text-sm font-scd-header">
+              {/* Article Type Box - Aligned with scd.cls TikZ */}
+              <div className="absolute top-0 right-0 bg-[hsl(var(--scd-red))] text-white px-4 py-1 text-sm font-scd-header min-h-[0.6cm] flex items-center">
                 Araştırma
               </div>
 
-              {/* Journal URL */}
-              <p className="font-scd-title text-[10px] text-right text-muted-foreground mt-6">
-                {JOURNAL_CONFIG.url}
-              </p>
+              {/* Journal URL - Aligned with scd.cls TikZ */}
+              <div className="absolute top-[2.2cm] right-0">
+                <p className="font-scd-header text-[8pt] text-muted-foreground">
+                  {JOURNAL_CONFIG.url}
+                </p>
+              </div>
             </div>
 
             {/* ===== TITLES ===== */}
-            <div className="mb-4">
+            <div className="mb-6">
               {article.language === 'EN' ? (
                 <>
-                  <h2 className="font-scd-title text-[18pt] font-bold text-[hsl(var(--scd-dark))] leading-tight mb-2">
+                  <h2 className="font-scd-title text-[18pt] font-bold text-[hsl(var(--scd-dark-davy))] leading-tight mb-2">
                     {article.metadata.titleEnglish || 'English Title'}
                   </h2>
-                  <h3 className="font-scd-title text-[14pt] italic text-[hsl(var(--scd-dark))] leading-tight">
+                  <h3 className="font-scd-title text-[14pt] italic text-[hsl(var(--scd-dark-davy))] leading-tight">
                     {article.metadata.titleTurkish || 'Türkçe Başlık'}
                   </h3>
                 </>
               ) : (
                 <>
-                  <h2 className="font-scd-title text-[18pt] font-bold text-[hsl(var(--scd-dark))] leading-tight mb-2">
+                  <h2 className="font-scd-title text-[18pt] font-bold text-[hsl(var(--scd-dark-davy))] leading-tight mb-2">
                     {article.metadata.titleTurkish || 'Türkçe Başlık'}
                   </h2>
-                  <h3 className="font-scd-title text-[14pt] italic text-[hsl(var(--scd-dark))] leading-tight">
+                  <h3 className="font-scd-title text-[14pt] italic text-[hsl(var(--scd-dark-davy))] leading-tight">
                     {article.metadata.titleEnglish || 'English Title'}
                   </h3>
                 </>
@@ -211,8 +215,8 @@ export function PdfPreview({ article }: PdfPreviewProps) {
             </div>
 
             {/* ===== AUTHORS ===== */}
-            <div className="mb-4">
-              <p className="font-scd-author text-base">
+            <div className="mb-6">
+              <p className="font-scd-author text-[12pt]">
                 {article.metadata.authors.length > 0
                   ? article.metadata.authors.map((a, i) => (
                     <span key={i}>
@@ -225,7 +229,7 @@ export function PdfPreview({ article }: PdfPreviewProps) {
                   : 'Yazar bilgisi girilmemiş'}
               </p>
               {/* Affiliations */}
-              <div className="mt-2 font-scd-meta text-[9pt] text-muted-foreground">
+              <div className="mt-2 font-scd-meta text-[9pt] text-muted-foreground pl-6">
                 {article.metadata.authors.map((a, i) => (
                   <p key={i}>
                     <sup className="text-[hsl(var(--scd-red))]">{i + 1}</sup> {a.affiliation || 'Kurum belirtilmemiş'}
@@ -238,82 +242,106 @@ export function PdfPreview({ article }: PdfPreviewProps) {
             {article.language === 'EN' ? (
               <>
                 {/* English Abstract First */}
-                <div className="flex gap-4 mb-4">
+                <div className="flex gap-6 mb-4">
                   <div className="flex-[3] bg-[hsl(var(--scd-light-blue))] p-4">
                     <p className="font-scd-abstract text-sm font-bold text-[hsl(var(--scd-blue))] mb-2">ABSTRACT</p>
-                    <p className="font-scd-abstract text-sm leading-relaxed">
+                    <p className="font-scd-abstract text-sm leading-relaxed text-justify">
                       {article.abstract.abstractEnglish || 'Abstract not entered...'}
                     </p>
                   </div>
-                  <div className="flex-1 font-scd-meta text-[9pt]">
-                    <p className="font-bold text-[hsl(var(--scd-blue))] mb-1">ARTICLE HISTORY</p>
-                    <p className="text-muted-foreground">
+                  <div className="flex-1 font-scd-meta text-[8pt]">
+                    <p className="font-bold text-[hsl(var(--scd-blue))] text-[9pt] mb-1">ARTICLE HISTORY</p>
+                    <p className="text-muted-foreground mb-3">
                       {article.history.receivedDate && <>Received: {article.history.receivedDate}<br /></>}
                       {article.history.acceptedDate && <>Accepted: {article.history.acceptedDate}<br /></>}
                       {article.history.publishedDate && <>Published: {article.history.publishedDate}</>}
                     </p>
-                    <p className="font-bold text-[hsl(var(--scd-blue))] mt-3 mb-1">KEYWORDS</p>
-                    <p className="text-muted-foreground">{formatKeywords(article.abstract.keywordsEnglish)}</p>
+                    <p className="font-bold text-[hsl(var(--scd-blue))] text-[9pt] mb-1">KEYWORDS</p>
+                    <p className="text-muted-foreground mb-3">{formatKeywords(article.abstract.keywordsEnglish)}</p>
+                    {article.ethics.hasEthicsApproval && (
+                      <>
+                        <p className="font-bold text-[hsl(var(--scd-blue))] text-[9pt] mb-1">ETHICS STATEMENT</p>
+                        <p className="text-muted-foreground">{article.ethics.ethicsText}</p>
+                      </>
+                    )}
                   </div>
                 </div>
                 {/* Turkish Abstract Second */}
-                <div className="flex gap-4 mb-6">
+                <div className="flex gap-6 mb-6">
                   <div className="flex-[3] bg-[hsl(var(--scd-light-blue))] p-4">
                     <p className="font-scd-abstract text-sm font-bold text-[hsl(var(--scd-blue))] mb-2">ÖZ</p>
-                    <p className="font-scd-abstract text-sm leading-relaxed">
+                    <p className="font-scd-abstract text-sm leading-relaxed text-justify">
                       {article.abstract.abstractTurkish || 'Özet girilmemiş...'}
                     </p>
                   </div>
-                  <div className="flex-1 font-scd-meta text-[9pt]">
-                    <p className="font-bold text-[hsl(var(--scd-blue))] mb-1">MAKALE GEÇMİŞİ</p>
-                    <p className="text-muted-foreground">
+                  <div className="flex-1 font-scd-meta text-[8pt]">
+                    <p className="font-bold text-[hsl(var(--scd-blue))] text-[9pt] mb-1">MAKALE GEÇMİŞİ</p>
+                    <p className="text-muted-foreground mb-3">
                       {article.history.receivedDate && <>Başvuru: {article.history.receivedDate}<br /></>}
                       {article.history.acceptedDate && <>Kabul: {article.history.acceptedDate}<br /></>}
                       {article.history.publishedDate && <>Yayın: {article.history.publishedDate}</>}
                     </p>
-                    <p className="font-bold text-[hsl(var(--scd-blue))] mt-3 mb-1">ANAHTAR KELİMELER</p>
-                    <p className="text-muted-foreground">{formatKeywords(article.abstract.keywordsTurkish)}</p>
+                    <p className="font-bold text-[hsl(var(--scd-blue))] text-[9pt] mb-1">ANAHTAR KELİMELER</p>
+                    <p className="text-muted-foreground mb-3">{formatKeywords(article.abstract.keywordsTurkish)}</p>
+                    {article.ethics.hasEthicsApproval && (
+                      <>
+                        <p className="font-bold text-[hsl(var(--scd-blue))] text-[9pt] mb-1">ETİK BEYAN</p>
+                        <p className="text-muted-foreground">{article.ethics.ethicsText}</p>
+                      </>
+                    )}
                   </div>
                 </div>
               </>
             ) : (
               <>
                 {/* Turkish Abstract First */}
-                <div className="flex gap-4 mb-4">
+                <div className="flex gap-6 mb-4">
                   <div className="flex-[3] bg-[hsl(var(--scd-light-blue))] p-4">
                     <p className="font-scd-abstract text-sm font-bold text-[hsl(var(--scd-blue))] mb-2">ÖZ</p>
-                    <p className="font-scd-abstract text-sm leading-relaxed">
+                    <p className="font-scd-abstract text-sm leading-relaxed text-justify">
                       {article.abstract.abstractTurkish || 'Özet girilmemiş...'}
                     </p>
                   </div>
-                  <div className="flex-1 font-scd-meta text-[9pt]">
-                    <p className="font-bold text-[hsl(var(--scd-blue))] mb-1">MAKALE GEÇMİŞİ</p>
-                    <p className="text-muted-foreground">
+                  <div className="flex-1 font-scd-meta text-[8pt]">
+                    <p className="font-bold text-[hsl(var(--scd-blue))] text-[9pt] mb-1">MAKALE GEÇMİŞİ</p>
+                    <p className="text-muted-foreground mb-3">
                       {article.history.receivedDate && <>Başvuru: {article.history.receivedDate}<br /></>}
                       {article.history.acceptedDate && <>Kabul: {article.history.acceptedDate}<br /></>}
                       {article.history.publishedDate && <>Yayın: {article.history.publishedDate}</>}
                     </p>
-                    <p className="font-bold text-[hsl(var(--scd-blue))] mt-3 mb-1">ANAHTAR KELİMELER</p>
-                    <p className="text-muted-foreground">{formatKeywords(article.abstract.keywordsTurkish)}</p>
+                    <p className="font-bold text-[hsl(var(--scd-blue))] text-[9pt] mb-1">ANAHTAR KELİMELER</p>
+                    <p className="text-muted-foreground mb-3">{formatKeywords(article.abstract.keywordsTurkish)}</p>
+                    {article.ethics.hasEthicsApproval && (
+                      <>
+                        <p className="font-bold text-[hsl(var(--scd-blue))] text-[9pt] mb-1">ETİK BEYAN</p>
+                        <p className="text-muted-foreground">{article.ethics.ethicsText}</p>
+                      </>
+                    )}
                   </div>
                 </div>
                 {/* English Abstract Second */}
-                <div className="flex gap-4 mb-6">
+                <div className="flex gap-6 mb-6">
                   <div className="flex-[3] bg-[hsl(var(--scd-light-blue))] p-4">
                     <p className="font-scd-abstract text-sm font-bold text-[hsl(var(--scd-blue))] mb-2">ABSTRACT</p>
-                    <p className="font-scd-abstract text-sm leading-relaxed">
+                    <p className="font-scd-abstract text-sm leading-relaxed text-justify">
                       {article.abstract.abstractEnglish || 'Abstract not entered...'}
                     </p>
                   </div>
-                  <div className="flex-1 font-scd-meta text-[9pt]">
-                    <p className="font-bold text-[hsl(var(--scd-blue))] mb-1">ARTICLE HISTORY</p>
-                    <p className="text-muted-foreground">
+                  <div className="flex-1 font-scd-meta text-[8pt]">
+                    <p className="font-bold text-[hsl(var(--scd-blue))] text-[9pt] mb-1">ARTICLE HISTORY</p>
+                    <p className="text-muted-foreground mb-3">
                       {article.history.receivedDate && <>Received: {article.history.receivedDate}<br /></>}
                       {article.history.acceptedDate && <>Accepted: {article.history.acceptedDate}<br /></>}
                       {article.history.publishedDate && <>Published: {article.history.publishedDate}</>}
                     </p>
-                    <p className="font-bold text-[hsl(var(--scd-blue))] mt-3 mb-1">KEYWORDS</p>
-                    <p className="text-muted-foreground">{formatKeywords(article.abstract.keywordsEnglish)}</p>
+                    <p className="font-bold text-[hsl(var(--scd-blue))] text-[9pt] mb-1">KEYWORDS</p>
+                    <p className="text-muted-foreground mb-3">{formatKeywords(article.abstract.keywordsEnglish)}</p>
+                    {article.ethics.hasEthicsApproval && (
+                      <>
+                        <p className="font-bold text-[hsl(var(--scd-blue))] text-[9pt] mb-1">ETHICS STATEMENT</p>
+                        <p className="text-muted-foreground">{article.ethics.ethicsText}</p>
+                      </>
+                    )}
                   </div>
                 </div>
               </>
@@ -390,9 +418,9 @@ export function PdfPreview({ article }: PdfPreviewProps) {
             </div>
 
             {/* ===== FOOTER (First page) ===== */}
-            <div className="absolute bottom-[1.5cm] left-[1.7cm] right-[1.7cm]">
+            <div className="absolute bottom-[2.2cm] left-[1.7cm] right-[1.7cm]">
               {/* Citation & Contact */}
-              <div className="mb-3 text-[9pt] font-scd-meta">
+              <div className="mb-2 text-[9pt] font-scd-meta">
                 {article.metadata.citation && (
                   <div className="flex gap-2 mb-1">
                     <span className="text-[hsl(var(--scd-blue))] font-bold">"</span>
@@ -400,17 +428,25 @@ export function PdfPreview({ article }: PdfPreviewProps) {
                     <span className="text-foreground">{article.metadata.citation}</span>
                   </div>
                 )}
-                {article.metadata.authors.some(a => a.isCorresponding) && (
+                {article.metadata.contactText ? (
                   <div className="flex items-center gap-2">
                     <span className="text-[hsl(var(--scd-blue))]">✉</span>
                     <span className="italic text-muted-foreground">İletişim / Contact:</span>
-                    {article.metadata.authors.filter(a => a.isCorresponding).map((author, i) => (
-                      <span key={author.id} className="text-foreground">
-                        {author.name}{author.email && ` • ${author.email}`}
-                        {i < article.metadata.authors.filter(a => a.isCorresponding).length - 1 && ', '}
-                      </span>
-                    ))}
+                    <span className="text-foreground">{article.metadata.contactText}</span>
                   </div>
+                ) : (
+                  article.metadata.authors.some(a => a.isCorresponding) && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-[hsl(var(--scd-blue))]">✉</span>
+                      <span className="italic text-muted-foreground">İletişim / Contact:</span>
+                      {article.metadata.authors.filter(a => a.isCorresponding).map((author, i) => (
+                        <span key={author.id} className="text-foreground">
+                          {author.name}{author.email && ` • ${author.email}`}
+                          {i < article.metadata.authors.filter(a => a.isCorresponding).length - 1 && ', '}
+                        </span>
+                      ))}
+                    </div>
+                  )
                 )}
               </div>
 
@@ -424,6 +460,102 @@ export function PdfPreview({ article }: PdfPreviewProps) {
                 </p>
               </div>
             </div>
+          </div>
+
+          {/* ===== PAGE 2 AND BEYOND (Body Content) ===== */}
+          <div className="paper-preview max-w-[210mm] mx-auto min-h-[297mm] shadow-xl relative bg-white mt-8"
+            style={{ padding: '2.6cm 1.7cm 3.2cm 1.7cm' }}>
+
+            {/* Page 2 Header */}
+            <div className="flex justify-between border-b border-muted pb-1 mb-6 text-[9pt] font-scd-header text-muted-foreground">
+              <span>{article.metadata.year || new Date().getFullYear()} | {JOURNAL_CONFIG.name.toUpperCase()}</span>
+              <span>Sayfa 2</span>
+            </div>
+
+            <div className="columns-2 gap-6 font-scd-body text-[11pt] leading-[13pt]" style={{ columnGap: '6mm' }}>
+              {article.sections.map((section, index) => (
+                <div key={section.id} className="mb-6">
+                  <h4 className="font-scd-body text-base font-bold text-[hsl(var(--scd-blue))] mb-2 break-after-avoid">
+                    {index + 1}. {section.title.toUpperCase()}
+                  </h4>
+                  <p className="text-justify indent-4 mb-2">
+                    {section.content || 'İçerik girilmemiş...'}
+                  </p>
+
+                  {/* Tables in section */}
+                  {section.tables && section.tables.length > 0 && (
+                    <div className="my-4 space-y-4">
+                      {section.tables.map((table, tableIndex) => (
+                        <div key={table.id} className={`break-inside-avoid ${table.layout === 'full-width' ? 'column-span-all' : ''}`}>
+                          <p className="text-xs font-bold text-[hsl(var(--scd-blue))] mb-1">
+                            Tablo {index + 1}.{tableIndex + 1}: {table.caption}
+                          </p>
+                          <table className="w-full text-xs border-collapse">
+                            <thead>
+                              <tr className="border-t-2 border-b border-[hsl(var(--scd-blue))]">
+                                {table.columns.map((col, colIdx) => (
+                                  <th key={colIdx} className="text-left py-1 px-2 font-bold">
+                                    {col}
+                                  </th>
+                                ))}
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {table.rows.map((row, rowIdx) => (
+                                <tr key={rowIdx} className="border-b border-muted">
+                                  {row.map((cell, cellIdx) => (
+                                    <td key={cellIdx} className="py-1 px-2">
+                                      {cell}
+                                    </td>
+                                  ))}
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                          {table.notes && (
+                            <p className="text-[8pt] text-muted-foreground mt-1 italic">
+                              Not: {table.notes}
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Subsections */}
+                  {section.subsections && section.subsections.length > 0 && (
+                    <div className="ml-0">
+                      {section.subsections.map((sub, subIndex) => (
+                        <div key={sub.id} className="mb-3">
+                          <h5 className="font-scd-body text-sm font-bold mb-1">
+                            {index + 1}.{subIndex + 1}. {sub.title}
+                          </h5>
+                          <p className="text-justify indent-4">
+                            {sub.content || ''}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* ===== REFERENCES ===== */}
+            {article.references && (
+              <div className="mt-8 border-t pt-4">
+                <h4 className="font-scd-body text-base font-bold text-[hsl(var(--scd-blue))] mb-4">
+                  {article.language === 'EN' ? 'REFERENCES' : 'KAYNAKÇA'}
+                </h4>
+                <div className="font-scd-body text-[10pt] leading-relaxed space-y-2">
+                  {article.references.filter(ref => ref.trim()).map((ref, idx) => (
+                    <p key={idx} className="pl-8 -indent-8 text-justify">
+                      {ref}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </ScrollArea>
       )}

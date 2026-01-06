@@ -15,7 +15,7 @@
   left=1.7cm,
   right=1.7cm,
   top=2.6cm,
-  bottom=3.2cm,
+  bottom=3.8cm,
   headheight=14pt
 }
 
@@ -291,6 +291,7 @@
 \providecommand\scd@issue{}
 \providecommand\scd@doi{}
 \providecommand\scd@citationtext{}
+\providecommand\scd@contacttext{}
 \providecommand\scd@initialsauthors{}
 \providecommand\scd@startpage{1} % Default start page is 1
 
@@ -317,6 +318,7 @@
 \newcommand{\issue}[1]{\renewcommand\scd@issue{#1}}
 \newcommand{\doi}[1]{\renewcommand\scd@doi{#1}}
 \newcommand{\citationtext}[1]{\renewcommand\scd@citationtext{#1}}
+\newcommand{\contacttext}[1]{\renewcommand\scd@contacttext{#1}}
 \newcommand{\initialsauthors}[1]{\renewcommand\scd@initialsauthors{#1}}
 \newcommand{\ethicsTR}[1]{\renewcommand\scd@ethicsTR{#1}}
 \newcommand{\ethicsEN}[1]{\renewcommand\scd@ethicsEN{#1}}
@@ -394,14 +396,22 @@
         \begin{minipage}[t]{0.95\textwidth}
           \scriptsize\textbf{\color{SCDBlue}Atıf / To Cite:}\par
           \scd@citationtext
-        \end{minipage}\\[0.5em]
+        \end{minipage}\\[0.2em]
       }
-      \ifstrempty{\scd@corremail}{}{%
+      \ifstrempty{\scd@contacttext}{%
+        \ifstrempty{\scd@corremail}{}{%
+          \begin{minipage}[t]{0.04\textwidth}\raisebox{-1pt}{\SCDContactIcon}\end{minipage}%
+          \begin{minipage}[t]{0.95\textwidth}
+            \scriptsize\textbf{\color{SCDBlue}İletişim / Contact:}\par
+            \scd@corrauthor\quad \href{mailto:\scd@corremail}{\scd@corremail}
+          \end{minipage}\\[0.4em]
+        }
+      }{%
         \begin{minipage}[t]{0.04\textwidth}\raisebox{-1pt}{\SCDContactIcon}\end{minipage}%
         \begin{minipage}[t]{0.95\textwidth}
           \scriptsize\textbf{\color{SCDBlue}İletişim / Contact:}\par
-          \scd@corrauthor\quad \href{mailto:\scd@corremail}{\scd@corremail}
-        \end{minipage}\\[0.8em]
+          \scd@contacttext
+        \end{minipage}\\[0.4em]
       }
       {\color{SCDBlue}\hrule height 1.5pt}\vspace{0.5em}
       \scriptsize
@@ -532,6 +542,7 @@
   }
   
   \vspace{1.2em}
+  \clearpage
 }
 
 
@@ -548,7 +559,7 @@
 
 % In-column table (for multicols)
 \newenvironment{scdtable}[2]{%
-  \vspace{1em}
+  \vspace{0.5em}
   \noindent
   \begin{minipage}{\linewidth}
     \centering
@@ -558,12 +569,12 @@
 }{%
     \end{tabular}
   \end{minipage}
-  \vspace{1em}
+  \vspace{0.8em}
 }
 
 % Full-width table (spans both columns)
 \newenvironment{scdtable*}[2]{%
-  \begin{table*}[tp]
+  \begin{table*}[!ht]
     \centering
     \scdtablesize\scdtablefont
     \caption{#2}

@@ -26,6 +26,7 @@ interface Article {
         year?: string;
         pages?: string;
         citation?: string;
+        contactText?: string;
     };
     abstract: {
         abstractTurkish: string;
@@ -57,7 +58,7 @@ interface Article {
         hasEthicsApproval?: boolean;
         ethicsText?: string;
     };
-    references?: string;
+    references?: string[];
 }
 
 // Escape LaTeX special characters
@@ -196,7 +197,9 @@ function generateLatexDocument(article: Article): string {
     const corrAuthor = m.authors?.find(auth => auth.isCorresponding) || m.authors?.[0];
 
     // Handle references - ensure it's a string
-    const refsText = typeof article.references === 'string' ? escapeReferences(article.references) : '';
+    const refsText = Array.isArray(article.references)
+        ? article.references.map(ref => escapeReferences(ref)).join('\n\n')
+        : '';
 
     return `\\documentclass{scd}
 \\setlang{${lang}}
@@ -238,6 +241,7 @@ ${e.hasEthicsApproval && e.ethicsText ? `\\ethicsTR{${escapeLatex(e.ethicsText)}
 \\abstractEN{${escapeLatex(a.abstractEnglish)}}
 
 ${m.citation ? `\\citationtext{${escapeLatex(m.citation)}}` : ''}
+${m.contactText ? `\\contacttext{${escapeLatex(m.contactText)}}` : ''}
 
 \\startpage{1}
 

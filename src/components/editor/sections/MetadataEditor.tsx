@@ -313,23 +313,36 @@ export function MetadataEditor({
             <p className="form-hint mt-1">Bu makaleye yapılacak atıf formatı (APA, vb.)</p>
           </div>
 
-          {/* Sorumlu Yazar Bilgisi - Otomatik */}
-          {metadata.authors.some(a => a.isCorresponding) && (
-            <div className="bg-muted/50 p-3 rounded-lg border">
-              <p className="text-xs font-medium text-muted-foreground mb-1">İletişim / Contact</p>
-              {metadata.authors.filter(a => a.isCorresponding).map(author => (
-                <div key={author.id} className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-[hsl(var(--scd-blue))]" />
-                  <span className="text-sm font-medium">{author.name}</span>
-                  {author.email && (
-                    <a href={`mailto:${author.email}`} className="text-sm text-[hsl(var(--scd-blue))] hover:underline">
-                      {author.email}
-                    </a>
-                  )}
-                </div>
-              ))}
+          <div className="pt-2 border-t">
+            <div className="flex items-center justify-between mb-2">
+              <Label className="form-label">İletişim / Contact</Label>
+              {metadata.authors.some(a => a.isCorresponding) && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 text-[10px] text-[hsl(var(--scd-blue))]"
+                  onClick={() => {
+                    const corr = metadata.authors.find(a => a.isCorresponding);
+                    if (corr) {
+                      onUpdateMetadata({ contactText: `${corr.name}  ${corr.email}` });
+                    }
+                  }}
+                >
+                  Sorumlu Yazardan Doldur
+                </Button>
+              )}
             </div>
-          )}
+            <div className="relative">
+              <Mail className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+              <Input
+                value={metadata.contactText}
+                onChange={(e) => onUpdateMetadata({ contactText: e.target.value })}
+                placeholder="Mehmet Gedik  adasdd@gmail.com"
+                className="pl-8"
+              />
+            </div>
+            <p className="form-hint mt-1">İletişim kurulacak yazar bilgisi</p>
+          </div>
         </CardContent>
       </Card>
     </div>
