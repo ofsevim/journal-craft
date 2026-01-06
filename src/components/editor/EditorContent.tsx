@@ -22,6 +22,7 @@ export function EditorContent({ activeTab, articleHook }: EditorContentProps) {
           <MetadataEditor
             metadata={articleHook.article.metadata}
             history={articleHook.article.history}
+            validationErrors={articleHook.validationErrors}
             onUpdateMetadata={articleHook.updateMetadata}
             onUpdateHistory={articleHook.updateHistory}
             onAddAuthor={articleHook.addAuthor}
@@ -33,6 +34,7 @@ export function EditorContent({ activeTab, articleHook }: EditorContentProps) {
         return (
           <AbstractEditor
             abstract={articleHook.article.abstract}
+            validationErrors={articleHook.validationErrors}
             onUpdate={articleHook.updateAbstract}
           />
         );
@@ -40,9 +42,13 @@ export function EditorContent({ activeTab, articleHook }: EditorContentProps) {
         return (
           <ContentEditor
             sections={articleHook.article.sections}
+            validationErrors={articleHook.validationErrors}
             onAddSection={articleHook.addSection}
             onUpdateSection={articleHook.updateSection}
             onRemoveSection={articleHook.removeSection}
+            onAddSubsection={articleHook.addSubsection}
+            onUpdateSubsection={articleHook.updateSubsection}
+            onRemoveSubsection={articleHook.removeSubsection}
           />
         );
       case 'tables':
@@ -65,6 +71,7 @@ export function EditorContent({ activeTab, articleHook }: EditorContentProps) {
         return (
           <EthicsEditor
             ethics={articleHook.article.ethics}
+            validationErrors={articleHook.validationErrors}
             onUpdate={articleHook.updateEthics}
           />
         );
@@ -85,7 +92,7 @@ export function EditorContent({ activeTab, articleHook }: EditorContentProps) {
           {activeTab === 'ethics' && 'Etik Beyan'}
         </h2>
       </div>
-      
+
       <ScrollArea className="flex-1">
         <div className="p-6 animate-fade-in">
           {renderContent()}

@@ -5,14 +5,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Shield, AlertCircle, CheckCircle2 } from 'lucide-react';
-import { EthicsStatement } from '@/types/article';
+import { EthicsStatement, ValidationError } from '@/types/article';
+import { cn } from '@/lib/utils';
 
 interface EthicsEditorProps {
   ethics: EthicsStatement;
+  validationErrors: ValidationError[];
   onUpdate: (updates: Partial<EthicsStatement>) => void;
 }
 
-export function EthicsEditor({ ethics, onUpdate }: EthicsEditorProps) {
+export function EthicsEditor({ ethics, validationErrors, onUpdate }: EthicsEditorProps) {
+  const getFieldError = (field: string) => validationErrors.find(e => e.field === field);
   return (
     <div className="space-y-6">
       <Card className="section-card">
@@ -43,30 +46,51 @@ export function EthicsEditor({ ethics, onUpdate }: EthicsEditorProps) {
             <div className="space-y-4 animate-fade-in">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label className="form-label">Etik Kurul Adı</Label>
+                  <Label className={cn("form-label", getFieldError('committeeName') && "text-destructive")}>Etik Kurul Adı</Label>
                   <Input
                     value={ethics.committeeName}
                     onChange={(e) => onUpdate({ committeeName: e.target.value })}
                     placeholder="Örn: XYZ Üniversitesi Etik Kurulu"
+                    className={cn(getFieldError('committeeName') && "border-destructive focus-visible:ring-destructive")}
                   />
+                  {getFieldError('committeeName') && (
+                    <p className="text-xs text-destructive mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3" />
+                      {getFieldError('committeeName')?.message}
+                    </p>
+                  )}
                 </div>
                 <div>
-                  <Label className="form-label">Onay Tarihi</Label>
+                  <Label className={cn("form-label", getFieldError('approvalDate') && "text-destructive")}>Onay Tarihi</Label>
                   <Input
                     type="date"
                     value={ethics.approvalDate}
                     onChange={(e) => onUpdate({ approvalDate: e.target.value })}
+                    className={cn(getFieldError('approvalDate') && "border-destructive focus-visible:ring-destructive")}
                   />
+                  {getFieldError('approvalDate') && (
+                    <p className="text-xs text-destructive mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3" />
+                      {getFieldError('approvalDate')?.message}
+                    </p>
+                  )}
                 </div>
               </div>
 
               <div>
-                <Label className="form-label">Karar Numarası</Label>
+                <Label className={cn("form-label", getFieldError('decisionNumber') && "text-destructive")}>Karar Numarası</Label>
                 <Input
                   value={ethics.decisionNumber}
                   onChange={(e) => onUpdate({ decisionNumber: e.target.value })}
                   placeholder="Örn: 2024/01-15"
+                  className={cn(getFieldError('decisionNumber') && "border-destructive focus-visible:ring-destructive")}
                 />
+                {getFieldError('decisionNumber') && (
+                  <p className="text-xs text-destructive mt-1 flex items-center gap-1">
+                    <AlertCircle className="w-3 h-3" />
+                    {getFieldError('decisionNumber')?.message}
+                  </p>
+                )}
               </div>
 
               <div>

@@ -4,12 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Plus, Trash2, GripVertical, Mail, Building2, Hash } from 'lucide-react';
-import { ArticleMetadata, ArticleHistory, Author } from '@/types/article';
+import { Plus, Trash2, GripVertical, Mail, Building2, Hash, AlertCircle } from 'lucide-react';
+import { ArticleMetadata, ArticleHistory, Author, ValidationError } from '@/types/article';
+import { cn } from '@/lib/utils';
 
 interface MetadataEditorProps {
   metadata: ArticleMetadata;
   history: ArticleHistory;
+  validationErrors: ValidationError[];
   onUpdateMetadata: (updates: Partial<ArticleMetadata>) => void;
   onUpdateHistory: (updates: Partial<ArticleHistory>) => void;
   onAddAuthor: () => void;
@@ -20,12 +22,14 @@ interface MetadataEditorProps {
 export function MetadataEditor({
   metadata,
   history,
+  validationErrors,
   onUpdateMetadata,
   onUpdateHistory,
   onAddAuthor,
   onUpdateAuthor,
   onRemoveAuthor,
 }: MetadataEditorProps) {
+  const getFieldError = (field: string) => validationErrors.find(e => e.field === field);
   return (
     <div className="space-y-6">
       {/* Titles */}
@@ -35,7 +39,7 @@ export function MetadataEditor({
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <Label htmlFor="titleTurkish" className="form-label">
+            <Label htmlFor="titleTurkish" className={cn("form-label", getFieldError('titleTurkish') && "text-destructive")}>
               Türkçe Başlık <span className="text-destructive">*</span>
             </Label>
             <Input
@@ -43,11 +47,17 @@ export function MetadataEditor({
               value={metadata.titleTurkish}
               onChange={(e) => onUpdateMetadata({ titleTurkish: e.target.value })}
               placeholder="Makalenin Türkçe başlığını girin..."
-              className="font-academic text-lg"
+              className={cn("font-academic text-lg", getFieldError('titleTurkish') && "border-destructive focus-visible:ring-destructive")}
             />
+            {getFieldError('titleTurkish') && (
+              <p className="text-xs text-destructive mt-1 flex items-center gap-1">
+                <AlertCircle className="w-3 h-3" />
+                {getFieldError('titleTurkish')?.message}
+              </p>
+            )}
           </div>
           <div>
-            <Label htmlFor="titleEnglish" className="form-label">
+            <Label htmlFor="titleEnglish" className={cn("form-label", getFieldError('titleEnglish') && "text-destructive")}>
               İngilizce Başlık <span className="text-destructive">*</span>
             </Label>
             <Input
@@ -55,8 +65,14 @@ export function MetadataEditor({
               value={metadata.titleEnglish}
               onChange={(e) => onUpdateMetadata({ titleEnglish: e.target.value })}
               placeholder="Enter the English title of the article..."
-              className="font-academic text-lg"
+              className={cn("font-academic text-lg", getFieldError('titleEnglish') && "border-destructive focus-visible:ring-destructive")}
             />
+            {getFieldError('titleEnglish') && (
+              <p className="text-xs text-destructive mt-1 flex items-center gap-1">
+                <AlertCircle className="w-3 h-3" />
+                {getFieldError('titleEnglish')?.message}
+              </p>
+            )}
           </div>
         </CardContent>
       </Card>
@@ -65,8 +81,18 @@ export function MetadataEditor({
       <Card className="section-card">
         <CardHeader className="pb-4">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-base font-semibold text-section-header">Yazarlar</CardTitle>
-            <Button variant="outline" size="sm" onClick={onAddAuthor}>
+            <div className="space-y-1">
+              <CardTitle className={cn("text-base font-semibold text-section-header", getFieldError('authors') && "text-destructive")}>
+                Yazarlar
+              </CardTitle>
+              {getFieldError('authors') && (
+                <p className="text-xs text-destructive flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3" />
+                  {getFieldError('authors')?.message}
+                </p>
+              )}
+            </div>
+            <Button variant="outline" size="sm" onClick={onAddAuthor} className={cn(getFieldError('authors') && "border-destructive text-destructive hover:bg-destructive/10")}>
               <Plus className="w-4 h-4 mr-1.5" />
               Yazar Ekle
             </Button>
@@ -107,7 +133,7 @@ export function MetadataEditor({
                           </Label>
                         </div>
                       </div>
-                      
+
                       <div className="grid grid-cols-2 gap-3">
                         <div>
                           <Label className="form-label text-xs">Ad Soyad</Label>
@@ -131,7 +157,7 @@ export function MetadataEditor({
                           </div>
                         </div>
                       </div>
-                      
+
                       <div className="grid grid-cols-2 gap-3">
                         <div>
                           <Label className="form-label text-xs">Kurum</Label>

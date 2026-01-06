@@ -1,5 +1,8 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Article, Author, ArticleSection, TableData, ValidationError } from '@/types/article';
+import { JOURNAL_CONFIG } from '@/config/journal';
+
+const STORAGE_KEY = 'journal_craft_current_article';
 
 const generateId = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
@@ -11,7 +14,7 @@ const createDefaultArticle = (): Article => ({
     titleEnglish: '',
     authors: [],
     doi: '',
-    journalName: 'Sosyal Bilimler Dergisi',
+    journalName: JOURNAL_CONFIG.name,
     volume: '',
     issue: '',
     year: new Date().getFullYear().toString(),
@@ -35,57 +38,40 @@ const createDefaultArticle = (): Article => ({
     decisionNumber: '',
     committeeName: '',
   },
-  sections: [
-    {
-      id: generateId(),
-      title: 'Giriş',
-      content: '',
-      subsections: [],
-      tables: [],
-      order: 0,
-    },
-    {
-      id: generateId(),
-      title: 'Yöntem',
-      content: '',
-      subsections: [],
-      tables: [],
-      order: 1,
-    },
-    {
-      id: generateId(),
-      title: 'Bulgular',
-      content: '',
-      subsections: [],
-      tables: [],
-      order: 2,
-    },
-    {
-      id: generateId(),
-      title: 'Tartışma',
-      content: '',
-      subsections: [],
-      tables: [],
-      order: 3,
-    },
-    {
-      id: generateId(),
-      title: 'Sonuç',
-      content: '',
-      subsections: [],
-      tables: [],
-      order: 4,
-    },
-  ],
+  sections: JOURNAL_CONFIG.sections.filter(s => s !== 'Kaynakça').map((title, index) => ({
+    id: generateId(),
+    title: title,
+    content: '',
+    subsections: [],
+    tables: [],
+    order: index,
+  })),
   references: [],
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 });
 
 export function useArticle() {
-  const [article, setArticle] = useState<Article>(createDefaultArticle());
+  // Initialize from localStorage or default
+  const [article, setArticle] = useState<Article>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error('Failed to parse saved article', e);
+      }
+    }
+    return createDefaultArticle();
+  });
+
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
   const [isSaving, setIsSaving] = useState(false);
+
+  // Auto-save to localStorage
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(article));
+  }, [article]);
 
   const updateMetadata = useCallback((updates: Partial<Article['metadata']>) => {
     setArticle(prev => ({
@@ -221,9 +207,9 @@ export function useArticle() {
       sections: prev.sections.map(s =>
         s.id === sectionId
           ? {
-              ...s,
-              tables: s.tables.map(t => (t.id === tableId ? { ...t, ...updates } : t)),
-            }
+            ...s,
+            tables: s.tables.map(t => (t.id === tableId ? { ...t, ...updates } : t)),
+          }
           : s
       ),
       updatedAt: new Date().toISOString(),
@@ -311,6 +297,61 @@ export function useArticle() {
     return errors;
   }, [article]);
 
+  const addSubsection = useCallback((sectionId: string) => {
+    const newSubsection = {
+      id: generateId(),
+      title: 'Yeni Alt Bölüm',
+      content: '',
+      order: 0,
+    };
+    setArticle(prev => ({
+      ...prev,
+      sections: prev.sections.map(s =>
+        s.id === sectionId
+          ? { ...s, subsections: [...s.subsections, newSubsection] }
+          : s
+      ),
+      updatedAt: new Date().toISOString(),
+    }));
+  }, []);
+
+  const updateSubsection = useCallback((sectionId: string, subsectionId: string, updates: Partial<ArticleSection['subsections'][0]>) => {
+    setArticle(prev => ({
+      ...prev,
+      sections: prev.sections.map(s =>
+        s.id === sectionId
+          ? {
+            ...s,
+            subsections: s.subsections.map(ss =>
+              ss.id === subsectionId ? { ...ss, ...updates } : ss
+            ),
+          }
+          : s
+      ),
+      updatedAt: new Date().toISOString(),
+    }));
+  }, []);
+
+  const removeSubsection = useCallback((sectionId: string, subsectionId: string) => {
+    setArticle(prev => ({
+      ...prev,
+      sections: prev.sections.map(s =>
+        s.id === sectionId
+          ? { ...s, subsections: s.subsections.filter(ss => ss.id !== subsectionId) }
+          : s
+      ),
+      updatedAt: new Date().toISOString(),
+    }));
+  }, []);
+
+  const resetArticle = useCallback(() => {
+    if (window.confirm('Tüm verileri silmek istediğinize emin misiniz?')) {
+      const defaultArticle = createDefaultArticle();
+      setArticle(defaultArticle);
+      localStorage.removeItem(STORAGE_KEY);
+    }
+  }, []);
+
   return {
     article,
     setArticle,
@@ -326,10 +367,14 @@ export function useArticle() {
     addSection,
     updateSection,
     removeSection,
+    addSubsection,
+    updateSubsection,
+    removeSubsection,
     addTable,
     updateTable,
     removeTable,
     updateReferences,
     validate,
+    resetArticle,
   };
 }

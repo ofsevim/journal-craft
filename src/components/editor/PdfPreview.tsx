@@ -3,6 +3,7 @@ import { Article } from '@/types/article';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { FileText, ZoomIn, ZoomOut, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { JOURNAL_CONFIG } from '@/config/journal';
 
 interface PdfPreviewProps {
   article: Article;
@@ -34,30 +35,30 @@ export function PdfPreview({ article }: PdfPreviewProps) {
           </Button>
         </div>
       </div>
-      
+
       <ScrollArea className="flex-1 p-6">
         {/* A4 Paper Preview - matching scd.cls geometry */}
-        <div className="paper-preview max-w-[210mm] mx-auto min-h-[297mm] shadow-xl relative" 
-             style={{ padding: '2.6cm 1.7cm 3.2cm 1.7cm' }}>
-          
+        <div id="article-pdf-content" className="paper-preview max-w-[210mm] mx-auto min-h-[297mm] shadow-xl relative bg-white"
+          style={{ padding: '2.6cm 1.7cm 3.2cm 1.7cm' }}>
+
           {/* ===== FIRST PAGE HEADER ===== */}
           <div className="relative mb-6">
             {/* Journal Name - Hoefler Text style */}
             <h1 className="font-scd-journal text-[26px] font-bold text-[hsl(var(--scd-blue))] leading-tight">
-              Sosyal Çalışma Dergisi
+              {JOURNAL_CONFIG.name}
             </h1>
-            
+
             {/* Article Type Box - Burgundy */}
             <div className="absolute top-0 right-0 bg-[hsl(var(--scd-red))] text-white px-3 py-1">
               <span className="font-scd-title text-sm">Araştırma</span>
             </div>
-            
+
             {/* Red horizontal line */}
             <div className="h-0.5 bg-[hsl(var(--scd-red))] mt-3 mb-1" />
-            
+
             {/* Journal URL */}
             <p className="font-scd-title text-[10px] text-right text-muted-foreground">
-              https://dergipark.org.tr/tr/pub/scd
+              {JOURNAL_CONFIG.url}
             </p>
           </div>
 
@@ -96,7 +97,7 @@ export function PdfPreview({ article }: PdfPreviewProps) {
                   </span>
                 ))}
               </p>
-              
+
               {/* Affiliations */}
               <div className="font-scd-title text-[9px] text-[hsl(var(--scd-text-gray))] mt-2 ml-4 space-y-0.5">
                 {article.metadata.authors.map((author, index) => (
@@ -121,7 +122,7 @@ export function PdfPreview({ article }: PdfPreviewProps) {
                 {article.abstract.abstractTurkish || 'Türkçe özet metni buraya eklenecektir...'}
               </p>
             </div>
-            
+
             {/* Metadata Sidebar */}
             <div className="w-[22%] font-scd-meta text-[10px]">
               <h5 className="font-bold text-[hsl(var(--scd-blue))] mb-1">MAKALE GEÇMİŞİ</h5>
@@ -130,12 +131,12 @@ export function PdfPreview({ article }: PdfPreviewProps) {
                 <p>Kabul: {article.history.acceptedDate || '–'}</p>
                 <p>Yayın: {article.history.publishedDate || '–'}</p>
               </div>
-              
+
               <h5 className="font-bold text-[hsl(var(--scd-blue))] mt-3 mb-1">ANAHTAR KELİMELER</h5>
               <p className="text-[9px] text-[hsl(var(--scd-text-gray))] leading-relaxed">
                 {formatKeywords(article.abstract.keywordsTurkish)}
               </p>
-              
+
               {article.ethics.hasEthicsApproval && (
                 <>
                   <h5 className="font-bold text-[hsl(var(--scd-blue))] mt-3 mb-1">ETİK BEYAN</h5>
@@ -147,7 +148,7 @@ export function PdfPreview({ article }: PdfPreviewProps) {
               )}
             </div>
           </div>
-          
+
           {/* English Abstract */}
           <div className="flex gap-4 mb-6">
             <div className="flex-1 bg-[hsl(var(--scd-light-blue))] p-4">
@@ -158,7 +159,7 @@ export function PdfPreview({ article }: PdfPreviewProps) {
                 {article.abstract.abstractEnglish || 'English abstract text will be added here...'}
               </p>
             </div>
-            
+
             <div className="w-[22%] font-scd-meta text-[10px]">
               <h5 className="font-bold text-[hsl(var(--scd-blue))] mb-1">ARTICLE HISTORY</h5>
               <div className="text-[9px] text-[hsl(var(--scd-text-gray))] space-y-0.5">
@@ -166,7 +167,7 @@ export function PdfPreview({ article }: PdfPreviewProps) {
                 <p>Accepted: {article.history.acceptedDate || '–'}</p>
                 <p>Published: {article.history.publishedDate || '–'}</p>
               </div>
-              
+
               <h5 className="font-bold text-[hsl(var(--scd-blue))] mt-3 mb-1">KEYWORDS</h5>
               <p className="text-[9px] text-[hsl(var(--scd-text-gray))] leading-relaxed">
                 {formatKeywords(article.abstract.keywordsEnglish)}
@@ -180,9 +181,9 @@ export function PdfPreview({ article }: PdfPreviewProps) {
             <div className="flex-1">
               <p className="font-scd-meta text-[10px] font-bold text-[hsl(var(--scd-blue))]">Atıf / To Cite:</p>
               <p className="font-scd-meta text-[9px] text-[hsl(var(--scd-text-gray))]">
-                {article.metadata.authors.map(a => a.name).filter(Boolean).join(', ') || 'Yazar'} 
-                ({article.metadata.year}). {article.metadata.titleTurkish || 'Başlık'}. 
-                <em> Sosyal Çalışma Dergisi</em>, {article.metadata.volume || '–'}({article.metadata.issue || '–'}), 1–XX.
+                {article.metadata.authors.map(a => a.name).filter(Boolean).join(', ') || 'Yazar'}
+                ({article.metadata.year}). {article.metadata.titleTurkish || 'Başlık'}.
+                <em> {JOURNAL_CONFIG.name}</em>, {article.metadata.volume || '–'}({article.metadata.issue || '–'}), 1–XX.
               </p>
             </div>
           </div>
@@ -213,12 +214,24 @@ export function PdfPreview({ article }: PdfPreviewProps) {
                 <h4 className="font-scd-body text-[12px] font-bold text-[hsl(var(--scd-blue))] mb-2 uppercase">
                   {index + 1}. {section.title}
                 </h4>
-                
+
                 {/* Section Content */}
-                <div className="text-justify indent-4 whitespace-pre-wrap">
+                <div className="text-justify indent-4 whitespace-pre-wrap mb-2">
                   {section.content || 'Bölüm içeriği...'}
                 </div>
-                
+
+                {/* Subsections */}
+                {section.subsections.map((ss, ssIndex) => (
+                  <div key={ss.id} className="mb-3">
+                    <h5 className="font-scd-body text-[11px] font-bold text-[hsl(var(--scd-dark-davy))] mb-1">
+                      {index + 1}.{ssIndex + 1}. {ss.title}
+                    </h5>
+                    <div className="text-justify indent-4 whitespace-pre-wrap">
+                      {ss.content}
+                    </div>
+                  </div>
+                ))}
+
                 {/* Tables in section */}
                 {section.tables.map((table, tableIndex) => (
                   <div key={table.id} className="my-4 break-inside-avoid">
@@ -281,8 +294,8 @@ export function PdfPreview({ article }: PdfPreviewProps) {
             <div className="h-0.5 bg-[hsl(var(--scd-blue))] mb-2" />
             <div className="flex justify-between items-center font-scd-meta text-[8px] text-[hsl(var(--scd-text-gray))]">
               <div>
-                <p>Turkish Journal of Social Work | E-ISSN: 2587-1412</p>
-                <p>Bu makale CC BY-NC 4.0 ile lisanslanmıştır.</p>
+                <p>{JOURNAL_CONFIG.nameEnglish} | E-ISSN: {JOURNAL_CONFIG.issn}</p>
+                <p>Bu makale {JOURNAL_CONFIG.license} ile lisanslanmıştır.</p>
                 <div className="flex gap-1 mt-1">
                   <span className="w-3 h-3 bg-gray-400 rounded-sm text-[6px] text-white flex items-center justify-center font-bold">CC</span>
                   <span className="w-3 h-3 bg-gray-400 rounded-sm text-[6px] text-white flex items-center justify-center font-bold">BY</span>

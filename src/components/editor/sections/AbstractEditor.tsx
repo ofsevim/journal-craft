@@ -6,14 +6,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { X, Plus, AlertCircle } from 'lucide-react';
-import { AbstractSection } from '@/types/article';
+import { AbstractSection, ValidationError } from '@/types/article';
+import { cn } from '@/lib/utils';
 
 interface AbstractEditorProps {
   abstract: AbstractSection;
+  validationErrors: ValidationError[];
   onUpdate: (updates: Partial<AbstractSection>) => void;
 }
 
-export function AbstractEditor({ abstract, onUpdate }: AbstractEditorProps) {
+export function AbstractEditor({ abstract, validationErrors, onUpdate }: AbstractEditorProps) {
+  const getFieldError = (field: string) => validationErrors.find(e => e.field === field);
   const [newKeywordEn, setNewKeywordEn] = useState('');
   const [newKeywordTr, setNewKeywordTr] = useState('');
 
@@ -70,9 +73,19 @@ export function AbstractEditor({ abstract, onUpdate }: AbstractEditorProps) {
               value={abstract.abstractTurkish}
               onChange={(e) => onUpdate({ abstractTurkish: e.target.value })}
               placeholder="Makalenizin Türkçe özetini buraya yazın. Özet, araştırmanızın amacını, yöntemini, bulgularını ve sonuçlarını kısaca özetlemelidir..."
-              className="min-h-[180px] font-academic text-base leading-relaxed resize-none"
+              className={cn(
+                "min-h-[180px] font-academic text-base leading-relaxed resize-none",
+                getFieldError('abstractTurkish') && "border-destructive focus-visible:ring-destructive"
+              )}
             />
-            <p className="form-hint">Özet 150-300 kelime arasında olmalıdır.</p>
+            {getFieldError('abstractTurkish') ? (
+              <p className="text-xs text-destructive mt-1 flex items-center gap-1">
+                <AlertCircle className="w-3 h-3" />
+                {getFieldError('abstractTurkish')?.message}
+              </p>
+            ) : (
+              <p className="form-hint">Özet 150-300 kelime arasında olmalıdır.</p>
+            )}
           </div>
 
           <div>
@@ -102,17 +115,17 @@ export function AbstractEditor({ abstract, onUpdate }: AbstractEditorProps) {
                 onChange={(e) => setNewKeywordTr(e.target.value)}
                 placeholder="Yeni anahtar kelime..."
                 onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addKeywordTurkish())}
-                className="flex-1"
+                className={cn("flex-1", getFieldError('keywordsTurkish') && "border-destructive focus-visible:ring-destructive")}
               />
-              <Button variant="outline" onClick={addKeywordTurkish}>
+              <Button variant="outline" onClick={addKeywordTurkish} className={cn(getFieldError('keywordsTurkish') && "border-destructive text-destructive hover:bg-destructive/10")}>
                 <Plus className="w-4 h-4 mr-1" />
                 Ekle
               </Button>
             </div>
-            {abstract.keywordsTurkish.length < 3 && (
-              <div className="flex items-center gap-2 mt-2 text-warning">
+            {getFieldError('keywordsTurkish') && (
+              <div className="flex items-center gap-2 mt-2 text-destructive">
                 <AlertCircle className="w-4 h-4" />
-                <span className="text-xs">En az 3 anahtar kelime gereklidir.</span>
+                <span className="text-xs">{getFieldError('keywordsTurkish')?.message}</span>
               </div>
             )}
           </div>
@@ -140,9 +153,19 @@ export function AbstractEditor({ abstract, onUpdate }: AbstractEditorProps) {
               value={abstract.abstractEnglish}
               onChange={(e) => onUpdate({ abstractEnglish: e.target.value })}
               placeholder="Write the English abstract of your article here. The abstract should briefly summarize the purpose, method, findings, and conclusions of your research..."
-              className="min-h-[180px] font-academic text-base leading-relaxed resize-none"
+              className={cn(
+                "min-h-[180px] font-academic text-base leading-relaxed resize-none",
+                getFieldError('abstractEnglish') && "border-destructive focus-visible:ring-destructive"
+              )}
             />
-            <p className="form-hint">Abstract should be between 150-300 words.</p>
+            {getFieldError('abstractEnglish') ? (
+              <p className="text-xs text-destructive mt-1 flex items-center gap-1">
+                <AlertCircle className="w-3 h-3" />
+                {getFieldError('abstractEnglish')?.message}
+              </p>
+            ) : (
+              <p className="form-hint">Abstract should be between 150-300 words.</p>
+            )}
           </div>
 
           <div>
@@ -172,17 +195,17 @@ export function AbstractEditor({ abstract, onUpdate }: AbstractEditorProps) {
                 onChange={(e) => setNewKeywordEn(e.target.value)}
                 placeholder="New keyword..."
                 onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addKeywordEnglish())}
-                className="flex-1"
+                className={cn("flex-1", getFieldError('keywordsEnglish') && "border-destructive focus-visible:ring-destructive")}
               />
-              <Button variant="outline" onClick={addKeywordEnglish}>
+              <Button variant="outline" onClick={addKeywordEnglish} className={cn(getFieldError('keywordsEnglish') && "border-destructive text-destructive hover:bg-destructive/10")}>
                 <Plus className="w-4 h-4 mr-1" />
                 Add
               </Button>
             </div>
-            {abstract.keywordsEnglish.length < 3 && (
-              <div className="flex items-center gap-2 mt-2 text-warning">
+            {getFieldError('keywordsEnglish') && (
+              <div className="flex items-center gap-2 mt-2 text-destructive">
                 <AlertCircle className="w-4 h-4" />
-                <span className="text-xs">At least 3 keywords are required.</span>
+                <span className="text-xs">{getFieldError('keywordsEnglish')?.message}</span>
               </div>
             )}
           </div>

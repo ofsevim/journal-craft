@@ -13,29 +13,30 @@ export function EditorLayout() {
 
   return (
     <div className="h-screen flex flex-col bg-background">
-      <EditorToolbar 
-        article={articleHook.article} 
+      <EditorToolbar
+        article={articleHook.article}
         onValidate={articleHook.validate}
         validationErrors={articleHook.validationErrors}
+        onReset={articleHook.resetArticle}
       />
-      
+
       <div className="flex-1 flex overflow-hidden">
-        <EditorSidebar 
-          activeTab={activeTab} 
+        <EditorSidebar
+          activeTab={activeTab}
           onTabChange={setActiveTab}
           sections={articleHook.article.sections}
         />
-        
+
         <ResizablePanelGroup direction="horizontal" className="flex-1">
           <ResizablePanel defaultSize={50} minSize={35}>
-            <EditorContent 
+            <EditorContent
               activeTab={activeTab}
               articleHook={articleHook}
             />
           </ResizablePanel>
-          
+
           <ResizableHandle withHandle className="bg-border hover:bg-accent transition-colors" />
-          
+
           <ResizablePanel defaultSize={50} minSize={30}>
             <PdfPreview article={articleHook.article} />
           </ResizablePanel>
