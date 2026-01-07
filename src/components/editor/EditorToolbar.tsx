@@ -39,6 +39,7 @@ import {
 } from '@/components/ui/select';
 import { toast } from 'sonner';
 import { compileArticleToPdf, downloadBlob, checkApiHealth } from '@/api/latex';
+import { exportArticleToJson, importArticleFromJson, openFilePicker } from '@/utils/articleIO';
 // @ts-ignore - html2pdf types can be tricky
 import html2pdf from 'html2pdf.js';
 
@@ -50,6 +51,8 @@ interface EditorToolbarProps {
   onLanguageChange: (language: 'TR' | 'EN') => void;
   showPreview: boolean;
   onTogglePreview: () => void;
+  onArticleImport?: (article: Article) => void;
+  isSaving?: boolean;
 }
 
 export function EditorToolbar({
@@ -59,14 +62,54 @@ export function EditorToolbar({
   onReset,
   onLanguageChange,
   showPreview,
-  onTogglePreview
+  onTogglePreview,
+  onArticleImport,
+  isSaving = false
 }: EditorToolbarProps) {
   const [isCompiling, setIsCompiling] = useState(false);
+  const [isImporting, setIsImporting] = useState(false);
   const errorCount = validationErrors.filter(e => e.severity === 'error').length;
   const warningCount = validationErrors.filter(e => e.severity === 'warning').length;
 
   const handleSave = () => {
     toast.success('Değişiklikler tarayıcıya kaydedildi');
+  };
+
+  // JSON olarak dışa aktar
+  const handleExportJson = () => {
+    try {
+      exportArticleToJson(article);
+      toast.success('Makale JSON olarak indirildi');
+    } catch (error) {
+      toast.error('Dışa aktarma başarısız');
+    }
+  };
+
+  // JSON'dan içe aktar
+  const handleImportJson = async () => {
+    if (!onArticleImport) return;
+    
+    setIsImporting(true);
+    try {
+      const file = await openFilePicker('.json');
+      if (!file) {
+        setIsImporting(false);
+        return;
+      }
+
+      const importedArticle = await importArticleFromJson(file);
+      
+      // Kullanıcıya onay sor
+      if (window.confirm('Mevcut makale verileri değiştirilecek. Devam etmek istiyor musunuz?')) {
+        onArticleImport(importedArticle);
+        toast.success('Makale başarıyla içe aktarıldı');
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'İçe aktarma başarısız';
+      toast.error(message);
+    } finally {
+      setIsImporting(false);
+    }
   };
 
   // Quick HTML-based PDF (existing)
@@ -213,12 +256,47 @@ export function EditorToolbar({
           Sıfırla
         </Button>
 
-        <Button variant="ghost" size="sm" onClick={handleSave}>
-          <Save className="w-4 h-4 mr-1.5" />
-          Kaydet
+        <Button variant="ghost" size="sm" onClick={handleSave} disabled={isSaving}>
+          {isSaving ? (
+            <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
+          ) : (
+            <Save className="w-4 h-4 mr-1.5" />
+          )}
+          {isSaving ? 'Kaydediliyor...' : 'Kaydet'}
         </Button>
 
         <div className="h-6 w-px bg-border mx-1" />
+
+        {/* Import/Export Dropdown */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" disabled={isImporting}>
+              {isImporting ? (
+                <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
+              ) : (
+                <FileText className="w-4 h-4 mr-1.5" />
+              )}
+              Dosya
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={handleImportJson} disabled={isImporting || !onArticleImport}>
+              <Download className="w-4 h-4 mr-2 rotate-180" />
+              <div>
+                <div className="font-medium">JSON İçe Aktar</div>
+                <div className="text-xs text-muted-foreground">Kayıtlı makaleyi yükle</div>
+              </div>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleExportJson}>
+              <Download className="w-4 h-4 mr-2" />
+              <div>
+                <div className="font-medium">JSON Dışa Aktar</div>
+                <div className="text-xs text-muted-foreground">Makaleyi kaydet</div>
+              </div>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

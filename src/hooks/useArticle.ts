@@ -1,8 +1,10 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { Article, Author, ArticleSection, TableData, ValidationError } from '@/types/article';
 import { JOURNAL_CONFIG } from '@/config/journal';
+import { useDebounce } from './useDebounce';
 
 const STORAGE_KEY = 'journal_craft_current_article';
+const SAVE_DEBOUNCE_MS = 1000; // 1 saniye debounce
 
 const generateId = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
@@ -70,11 +72,30 @@ export function useArticle() {
 
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
   const [isSaving, setIsSaving] = useState(false);
+  const isFirstRender = useRef(true);
 
-  // Auto-save to localStorage
+  // Debounced article for localStorage save
+  const debouncedArticle = useDebounce(article, SAVE_DEBOUNCE_MS);
+
+  // Auto-save to localStorage with debounce
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(article));
-  }, [article]);
+    // İlk renderda kaydetme (zaten localStorage'dan yüklendi)
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(debouncedArticle));
+      console.log('📝 Article auto-saved');
+    } catch (error) {
+      console.error('❌ Failed to save article:', error);
+    } finally {
+      // Kısa bir süre sonra saving durumunu kapat (UI feedback için)
+      setTimeout(() => setIsSaving(false), 300);
+    }
+  }, [debouncedArticle]);
 
   const updateMetadata = useCallback((updates: Partial<Article['metadata']>) => {
     setArticle(prev => ({

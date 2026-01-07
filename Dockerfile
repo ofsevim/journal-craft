@@ -27,6 +27,7 @@ RUN npm ci
 
 # Copy server source files
 COPY server/*.ts ./
+COPY server/*.js ./
 
 # Copy the LaTeX class file
 COPY scd.cls ./

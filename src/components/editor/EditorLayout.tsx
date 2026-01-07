@@ -22,6 +22,8 @@ export function EditorLayout() {
         onLanguageChange={articleHook.setLanguage}
         showPreview={showPreview}
         onTogglePreview={() => setShowPreview(!showPreview)}
+        onArticleImport={articleHook.setArticle}
+        isSaving={articleHook.isSaving}
       />
 
       <div className="flex-1 flex overflow-hidden">

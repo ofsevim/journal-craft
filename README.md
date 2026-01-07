@@ -1,73 +1,211 @@
-# Welcome to your Lovable project
+# Journal Craft - Akademik Makale Editörü
 
-## Project info
+<p align="center">
+  <img src="public/favicon.ico" alt="Journal Craft Logo" width="64" height="64">
+</p>
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+**Journal Craft**, akademik makaleleri Sosyal Çalışma Dergisi (SCD) formatında düzenlemenizi ve LaTeX PDF olarak dışa aktarmanızı sağlayan modern bir web uygulamasıdır.
 
-## How can I edit this code?
+## ✨ Özellikler
 
-There are several ways of editing your application.
+- 📝 **Görsel Makale Editörü** - Sezgisel arayüz ile makale yazımı
+- 📄 **Gerçek Zamanlı Önizleme** - HTML ve LaTeX PDF önizleme
+- 🖨️ **LaTeX PDF Çıktısı** - scd.cls formatında profesyonel PDF
+- 💾 **Otomatik Kaydetme** - Değişiklikler otomatik olarak kaydedilir
+- 📤 **Import/Export** - JSON formatında içe/dışa aktarma
+- 🌍 **Çift Dil Desteği** - Türkçe ve İngilizce makale desteği
+- 📊 **Tablo Editörü** - Kolay tablo oluşturma ve düzenleme
+- ✅ **Doğrulama** - Makale yapısı doğrulama
 
-**Use Lovable**
+## 🛠️ Teknolojiler
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+### Frontend
+- **React 18** - UI framework
+- **TypeScript** - Tip güvenliği
+- **Vite** - Build tool
+- **Tailwind CSS** - Styling
+- **shadcn/ui** - UI components
+- **React Query** - Server state management
 
-Changes made via Lovable will be committed automatically to this repo.
+### Backend
+- **Express.js** - API server
+- **XeLaTeX** - PDF derleme
+- **Zod** - Input validation
+- **Helmet** - Security headers
+- **Rate Limiting** - DoS koruması
 
-**Use your preferred IDE**
+## 🚀 Kurulum
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Gereksinimler
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- Node.js 18+
+- npm veya yarn
+- XeLaTeX (PDF derleme için)
 
-Follow these steps:
+### 1. Projeyi Klonlayın
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+```bash
+git clone https://github.com/your-username/journal-craft.git
+cd journal-craft
+```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### 2. Frontend Kurulumu
 
-# Step 3: Install the necessary dependencies.
-npm i
+```bash
+# Bağımlılıkları yükle
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Environment dosyasını oluştur
+cp .env.example .env
+
+# Development server'ı başlat
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Frontend `http://localhost:5173` adresinde çalışacaktır.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### 3. Backend Kurulumu (LaTeX PDF için)
 
-**Use GitHub Codespaces**
+```bash
+# Server klasörüne git
+cd server
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+# Bağımlılıkları yükle
+npm install
 
-## What technologies are used for this project?
+# Environment dosyasını oluştur
+cp .env.example .env
 
-This project is built with:
+# Server'ı başlat
+npm run dev
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Backend `http://localhost:3001` adresinde çalışacaktır.
 
-## How can I deploy this project?
+### 4. XeLaTeX Kurulumu (Opsiyonel)
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+LaTeX PDF çıktısı için sisteminizde XeLaTeX kurulu olmalıdır:
 
-## Can I connect a custom domain to my Lovable project?
+**Windows:**
+```bash
+# MiKTeX veya TeX Live kurulumu
+# https://miktex.org/download
+```
 
-Yes, you can!
+**macOS:**
+```bash
+brew install --cask mactex
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+**Linux (Ubuntu/Debian):**
+```bash
+sudo apt-get install texlive-xetex texlive-fonts-recommended texlive-fonts-extra
+```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## 📁 Proje Yapısı
+
+```
+journal-craft/
+├── src/
+│   ├── api/              # API istemci fonksiyonları
+│   ├── components/       # React componentleri
+│   │   ├── editor/       # Editör componentleri
+│   │   └── ui/           # shadcn/ui componentleri
+│   ├── hooks/            # Custom React hooks
+│   ├── types/            # TypeScript tip tanımları
+│   ├── utils/            # Yardımcı fonksiyonlar
+│   └── config/           # Uygulama yapılandırması
+├── server/               # Express.js backend
+│   ├── index.ts          # Server entry point
+│   ├── latex-service.ts  # LaTeX derleme servisi
+│   └── validation.ts     # Zod şemaları
+├── public/               # Statik dosyalar
+└── scd.cls               # LaTeX class dosyası
+```
+
+## 🔧 Yapılandırma
+
+### Environment Variables
+
+**Frontend (.env):**
+```env
+VITE_API_URL=http://localhost:3001
+```
+
+**Backend (server/.env):**
+```env
+PORT=3001
+NODE_ENV=development
+ALLOWED_ORIGINS=http://localhost:5173
+```
+
+## 📖 Kullanım
+
+1. **Makale Bilgileri** - Başlık, yazarlar ve yayın bilgilerini girin
+2. **Özet** - Türkçe ve İngilizce özetleri yazın
+3. **İçerik** - Makale bölümlerini düzenleyin
+4. **Tablolar** - Gerekli tabloları ekleyin
+5. **Kaynakça** - Referansları listeleyin
+6. **PDF İndir** - LaTeX PDF olarak dışa aktarın
+
+## 🐳 Docker ile Çalıştırma
+
+```bash
+# Image oluştur
+docker build -t journal-craft-server .
+
+# Container'ı çalıştır
+docker run -p 3001:3001 journal-craft-server
+```
+
+## 🧪 Geliştirme
+
+```bash
+# Lint kontrolü
+npm run lint
+
+# Build
+npm run build
+
+# Preview
+npm run preview
+```
+
+## 📝 API Endpoints
+
+| Method | Endpoint | Açıklama |
+|--------|----------|----------|
+| GET | `/api/health` | Sunucu sağlık kontrolü |
+| POST | `/api/compile` | Makaleyi PDF'e derle |
+
+## 🔒 Güvenlik
+
+- Helmet ile HTTP güvenlik başlıkları
+- Rate limiting (10 istek/dakika derleme için)
+- CORS koruması
+- Input validation (Zod)
+- XSS koruması
+
+## 🤝 Katkıda Bulunma
+
+1. Fork yapın
+2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
+3. Değişikliklerinizi commit edin (`git commit -m 'Add amazing feature'`)
+4. Branch'i push edin (`git push origin feature/amazing-feature`)
+5. Pull Request açın
+
+## 📄 Lisans
+
+Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için [LICENSE](LICENSE) dosyasına bakın.
+
+## 🙏 Teşekkürler
+
+- [Sosyal Çalışma Dergisi](https://dergipark.org.tr/tr/pub/scd) - LaTeX şablonu
+- [shadcn/ui](https://ui.shadcn.com/) - UI componentleri
+- [Radix UI](https://www.radix-ui.com/) - Erişilebilir primitifler
+
+---
+
+<p align="center">
+  Made with ❤️ for academic publishing
+</p>
