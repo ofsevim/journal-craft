@@ -2,7 +2,7 @@
 FROM node:20-bookworm-slim
 
 # Install TeX Live with XeLaTeX and required packages
-# TeX Gyre fonts are included in texlive-fonts-recommended
+# Latin Modern fonts are included in lmodern package
 RUN apt-get update && apt-get install -y --no-install-recommends \
     texlive-xetex \
     texlive-fonts-recommended \
@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     texlive-latex-extra \
     texlive-lang-european \
     texlive-science \
+    lmodern \
     fontconfig \
     && rm -rf /var/lib/apt/lists/* \
     && fc-cache -fv

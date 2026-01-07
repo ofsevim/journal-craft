@@ -24,32 +24,32 @@
 % =========================================================
 \RequirePackage{fontspec}
 
-% Use TeX Gyre fonts (available in texlive-fonts-recommended)
-% These are high-quality open-source alternatives to Windows fonts
+% Use Latin Modern fonts (always available in TeX Live)
+% These are the standard LaTeX fonts, high quality and professional
 
-% Main text font - TeX Gyre Termes (Times-like, replaces Georgia)
-\setmainfont{TeX Gyre Termes}
+% Main text font - Latin Modern Roman (Times-like)
+\setmainfont{Latin Modern Roman}
 
-% Sans-serif font - TeX Gyre Heros (Helvetica-like, replaces Arial)
-\setsansfont{TeX Gyre Heros}
+% Sans-serif font - Latin Modern Sans
+\setsansfont{Latin Modern Sans}
 
-% Monospace font - TeX Gyre Cursor (Courier-like, replaces Consolas)
-\setmonofont{TeX Gyre Cursor}
+% Monospace font - Latin Modern Mono
+\setmonofont{Latin Modern Mono}
 
 % --- FONT VE PUNTO KONTROL PANELİ (Cross-Platform Compatible) ---
-\newfontfamily\scdtitleTRfont{TeX Gyre Heros}     % Türkçe Başlık (Title TR)
-\newfontfamily\scdtitleENfont{TeX Gyre Heros}     % İngilizce Başlık (Title EN)
-\newfontfamily\scdauthorfont{TeX Gyre Heros}     % Yazar İsimleri
-\newfontfamily\scdaffilfont{TeX Gyre Heros}     % Kurum Bilgileri
-\newfontfamily\scdabstractfont{TeX Gyre Heros}      % Özet Metinleri
-\newfontfamily\scdmetafont{TeX Gyre Heros}            % Metadata (Sağ Sütun)
-\newfontfamily\scdbodyfont{TeX Gyre Termes}              % ANA METİN (Body) FONTU
+\newfontfamily\scdtitleTRfont{Latin Modern Sans}     % Türkçe Başlık (Title TR)
+\newfontfamily\scdtitleENfont{Latin Modern Sans}     % İngilizce Başlık (Title EN)
+\newfontfamily\scdauthorfont{Latin Modern Sans}     % Yazar İsimleri
+\newfontfamily\scdaffilfont{Latin Modern Sans}     % Kurum Bilgileri
+\newfontfamily\scdabstractfont{Latin Modern Sans}      % Özet Metinleri
+\newfontfamily\scdmetafont{Latin Modern Sans}            % Metadata (Sağ Sütun)
+\newfontfamily\scdbodyfont{Latin Modern Roman}              % ANA METİN (Body) FONTU
 \newcommand{\scdbodysize}{\fontsize{11}{13}\selectfont} % ANA METİN PUNTO
-\newfontfamily\scdcaptionfont{TeX Gyre Heros}      % Tablo ve Şekil Başlıkları
-\newfontfamily\scdtablefont{TeX Gyre Termes}         % TABLO İÇİ FONTU
+\newfontfamily\scdcaptionfont{Latin Modern Sans}      % Tablo ve Şekil Başlıkları
+\newfontfamily\scdtablefont{Latin Modern Roman}         % TABLO İÇİ FONTU
 \newcommand{\scdtablesize}{\fontsize{10}{12}\selectfont} % TABLO İÇİ PUNTO
-\newfontfamily\scdheaderfont{TeX Gyre Heros} % Sayfa Üst Bilgileri
-\newfontfamily\journalfont{TeX Gyre Termes}    % Dergi Adı (Header Logosu)
+\newfontfamily\scdheaderfont{Latin Modern Sans} % Sayfa Üst Bilgileri
+\newfontfamily\journalfont{Latin Modern Roman}    % Dergi Adı (Header Logosu)
 % --------------------------------------------------------------------------
 
 
