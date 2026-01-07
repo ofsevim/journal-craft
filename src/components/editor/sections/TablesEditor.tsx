@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Plus, Trash2, PlusCircle, MinusCircle, Table as TableIcon } from 'lucide-react';
 import { ArticleSection, TableData } from '@/types/article';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 interface TablesEditorProps {
   sections: ArticleSection[];
@@ -158,17 +159,17 @@ export function TablesEditor({
                   </div>
                 </div>
 
-                {/* Table Grid */}
-                <div className="border border-border rounded-lg overflow-hidden">
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
+                {/* Table Grid container with horizontal scroll */}
+                <div className="border border-border rounded-lg overflow-hidden flex flex-col">
+                  <ScrollArea className="w-full">
+                    <table className="min-w-full border-collapse">
                       <thead>
                         <tr className="bg-muted">
-                          <th className="w-8 border-r border-b border-border" />
+                          <th className="w-10 border-r border-b border-border" />
                           {table.columns.map((col, colIndex) => (
                             <th
                               key={colIndex}
-                              className="border-r border-b border-border last:border-r-0 min-w-[120px]"
+                              className="border-r border-b border-border last:border-r-0 min-w-[150px]"
                             >
                               <div className="flex items-center">
                                 <Input
@@ -190,7 +191,7 @@ export function TablesEditor({
                               </div>
                             </th>
                           ))}
-                          <th className="w-10 border-b border-border">
+                          <th className="w-10 border-b border-border bg-muted/30">
                             <Button
                               variant="ghost"
                               size="icon"
@@ -227,12 +228,14 @@ export function TablesEditor({
                                 />
                               </td>
                             ))}
-                            <td className="w-10" />
+                            <td className="w-10 bg-muted/10" />
                           </tr>
                         ))}
                       </tbody>
                     </table>
-                  </div>
+                    <ScrollBar orientation="horizontal" />
+                  </ScrollArea>
+
                   <div className="bg-muted/50 px-3 py-2 border-t border-border">
                     <Button
                       variant="ghost"
