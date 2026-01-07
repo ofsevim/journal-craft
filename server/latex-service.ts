@@ -269,30 +269,61 @@ export async function compileLatex(article: Article): Promise<Buffer> {
     const texFile = path.join(tempDir, 'article.tex');
     const pdfFile = path.join(tempDir, 'article.pdf');
 
+    console.log('🔍 __dirname:', __dirname);
+    console.log('🔍 tempDir:', tempDir);
+
     try {
         // Copy scd.cls to temp directory
-        // In Docker, scd.cls is in the same directory; locally it's in parent
-        let clsSource = path.join(__dirname, 'scd.cls');
-        try {
-            await fs.access(clsSource);
-        } catch {
-            clsSource = path.join(__dirname, '..', 'scd.cls');
+        // Try multiple possible locations
+        const possiblePaths = [
+            path.join(__dirname, 'scd.cls'),           // Same directory (Docker)
+            path.join(__dirname, '..', 'scd.cls'),     // Parent directory (local)
+            '/app/scd.cls',                             // Docker absolute path
+            path.join(process.cwd(), 'scd.cls'),       // Current working directory
+        ];
+
+        let clsSource: string | null = null;
+        for (const p of possiblePaths) {
+            try {
+                await fs.access(p);
+                clsSource = p;
+                console.log('✅ Found scd.cls at:', p);
+                break;
+            } catch {
+                console.log('❌ scd.cls not found at:', p);
+            }
         }
+
+        if (!clsSource) {
+            throw new Error('scd.cls not found in any expected location');
+        }
+
         const clsDest = path.join(tempDir, 'scd.cls');
         await fs.copyFile(clsSource, clsDest);
 
         // Copy img folder if exists
-        let imgSource = path.join(__dirname, 'img');
-        try {
-            await fs.access(imgSource);
-        } catch {
-            imgSource = path.join(__dirname, '..', 'img');
+        const imgPossiblePaths = [
+            path.join(__dirname, 'img'),
+            path.join(__dirname, '..', 'img'),
+            '/app/img',
+            path.join(process.cwd(), 'img'),
+        ];
+
+        let imgSource: string | null = null;
+        for (const p of imgPossiblePaths) {
+            try {
+                await fs.access(p);
+                imgSource = p;
+                break;
+            } catch {
+                // Continue searching
+            }
         }
+
         const imgDest = path.join(tempDir, 'img');
-        try {
+        if (imgSource) {
             await fs.cp(imgSource, imgDest, { recursive: true });
-        } catch {
-            // img folder might not exist, that's ok
+        } else {
             await fs.mkdir(imgDest, { recursive: true });
         }
 
