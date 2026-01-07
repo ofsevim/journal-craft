@@ -50,28 +50,22 @@ export function ReferencesEditor({ references, onUpdate }: ReferencesEditorProps
           </div>
 
           {references.length > 0 && (
-            <div className="space-y-2">
+            <div className="space-y-3">
               {references.map((reference, index) => (
                 <div
                   key={index}
-                  className="flex items-start gap-2 p-3 border border-border rounded-lg bg-card hover:border-section-border transition-colors group"
+                  className="flex items-start gap-2 group transition-all"
                 >
-                  <div className="text-muted-foreground cursor-grab pt-1">
-                    <GripVertical className="w-4 h-4" />
-                  </div>
-                  <span className="text-xs font-medium text-muted-foreground bg-muted px-2 py-0.5 rounded mt-1">
-                    [{index + 1}]
-                  </span>
                   <Textarea
                     value={reference}
                     onChange={(e) => updateReference(index, e.target.value)}
-                    className="flex-1 min-h-[60px] resize-none text-sm font-academic"
+                    className="flex-1 min-h-[60px] resize-none text-sm font-academic leading-relaxed"
                     placeholder="Kaynak bilgisini girin..."
                   />
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="h-9 w-9 text-muted-foreground hover:text-destructive shrink-0"
                     onClick={() => removeReference(index)}
                   >
                     <Trash2 className="w-4 h-4" />

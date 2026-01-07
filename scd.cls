@@ -16,7 +16,8 @@
   right=1.7cm,
   top=2.6cm,
   bottom=3.8cm,
-  headheight=14pt
+  headheight=18pt,
+  footskip=85pt
 }
 
 % =========================================================
@@ -571,9 +572,7 @@
     \centering
     \scdtablesize\scdtablefont
     \captionof{table}{#2}
-    \begin{tabular}{#1}
 }{%
-    \end{tabular}
   \end{minipage}
   \vspace{0.8em}
 }
@@ -584,9 +583,7 @@
     \centering
     \scdtablesize\scdtablefont
     \caption{#2}
-    \begin{tabular}{#1}
 }{%
-    \end{tabular}
   \end{table*}
 }
 
@@ -602,15 +599,19 @@
 % =========================================================
 % Manual Reference Section (Word Style)
 % =========================================================
-% Redefined to use paragraph parameters for robust hanging indents on ALL paragraphs.
 \newenvironment{scdreferences}{%
   \section*{\refname}%
-  \fontsize{10}{12}\selectfont
+  \fontsize{10}{11}\selectfont
   \setstretch{1.0}
-  \setlength{\parskip}{6pt}
-  \setlength{\leftskip}{1cm}
-  \setlength{\parindent}{-1cm}
-  \par
+  \begin{list}{}{%
+    \setlength{\leftmargin}{0.6cm}%
+    \setlength{\itemindent}{-0.6cm}%
+    \setlength{\labelwidth}{0pt}%
+    \setlength{\labelsep}{0pt}%
+    \setlength{\parsep}{6pt}%
+    \setlength{\itemsep}{0pt}%
+    \setlength{\topsep}{0pt}%
+  }%
 }{%
-  \par
+  \end{list}%
 }

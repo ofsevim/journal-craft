@@ -161,6 +161,9 @@ function generateTable(table: { caption: string; layout: string; columns: string
         ? `\n\\begin{scdtable*}{${colSpec}}{${escapeLatex(table.caption)}}\n`
         : `\n\\begin{scdtable}{${colSpec}}{${escapeLatex(table.caption)}}\n`;
 
+    // Start tabular explicitly
+    latex += `\\begin{tabular}{${colSpec}}\n`;
+
     // Header row
     latex += '\\toprule\n';
     latex += table.columns.map(col => {
@@ -191,10 +194,14 @@ function generateTable(table: { caption: string; layout: string; columns: string
     }
 
     latex += '\\bottomrule\n';
+    latex += '\\end{tabular}\n';
 
-    // Table notes
+    // Table notes - now outside tabular but inside minipage/table*
     if (table.notes) {
-        latex += `\\tablenote{${escapeLatex(table.notes)}}\n`;
+        // Remove "Note:" or "Not:" if user manually typed it to avoid "Note: Note:"
+        let cleanNote = table.notes.trim();
+        cleanNote = cleanNote.replace(/^(Not|Note|NOT|NOTE|Atıf|Atif)\s*:\s*/i, '');
+        latex += `\\tablenote{${escapeLatex(cleanNote)}}\n`;
     }
 
     latex += isFullWidth ? '\\end{scdtable*}\n\n' : '\\end{scdtable}\n\n';
@@ -215,7 +222,10 @@ function generateLatexDocument(article: Article): string {
 
     // Handle references - ensure it's a string
     const refsText = Array.isArray(article.references)
-        ? article.references.map(ref => escapeReferences(ref)).join('\n\n')
+        ? article.references
+            .filter(ref => ref && ref.trim())
+            .map(ref => `\\item ${escapeReferences(ref)}`)
+            .join('\n')
         : '';
 
     return `\\documentclass{scd}
