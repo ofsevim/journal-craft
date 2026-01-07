@@ -271,12 +271,23 @@ export async function compileLatex(article: Article): Promise<Buffer> {
 
     try {
         // Copy scd.cls to temp directory
-        const clsSource = path.join(__dirname, '..', 'scd.cls');
+        // In Docker, scd.cls is in the same directory; locally it's in parent
+        let clsSource = path.join(__dirname, 'scd.cls');
+        try {
+            await fs.access(clsSource);
+        } catch {
+            clsSource = path.join(__dirname, '..', 'scd.cls');
+        }
         const clsDest = path.join(tempDir, 'scd.cls');
         await fs.copyFile(clsSource, clsDest);
 
         // Copy img folder if exists
-        const imgSource = path.join(__dirname, '..', 'img');
+        let imgSource = path.join(__dirname, 'img');
+        try {
+            await fs.access(imgSource);
+        } catch {
+            imgSource = path.join(__dirname, '..', 'img');
+        }
         const imgDest = path.join(tempDir, 'img');
         try {
             await fs.cp(imgSource, imgDest, { recursive: true });
