@@ -20,33 +20,36 @@
 }
 
 % =========================================================
-% Fonts & Encoding (XeLaTeX - Windows Compatible Fonts)
+% Fonts & Encoding (XeLaTeX - Cross-Platform Compatible)
 % =========================================================
 \RequirePackage{fontspec}
 
-% Main text font - Georgia (elegant serif, available on Windows)
-\setmainfont{Georgia}
+% Use TeX Gyre fonts (available in texlive-fonts-recommended)
+% These are high-quality open-source alternatives to Windows fonts
 
-% Sans-serif font
-\setsansfont{Arial}
+% Main text font - TeX Gyre Termes (Times-like, replaces Georgia)
+\setmainfont{TeX Gyre Termes}
 
-% Monospace font
-\setmonofont{Consolas}
+% Sans-serif font - TeX Gyre Heros (Helvetica-like, replaces Arial)
+\setsansfont{TeX Gyre Heros}
 
-% --- FONT VE PUNTO KONTROL PANELİ (Windows Sistem Fontlarını Burada Değiştirebilirsiniz) ---
-\newfontfamily\scdtitleTRfont{Arial}     % Türkçe Başlık (Title TR)
-\newfontfamily\scdtitleENfont{Arial}     % İngilizce Başlık (Title EN)
-\newfontfamily\scdauthorfont{Arial}     % Yazar İsimleri (Görsele uygun Sans-Serif)
-\newfontfamily\scdaffilfont{Arial}     % Kurum Bilgileri (Görsele uygun Sans-Serif)
-\newfontfamily\scdabstractfont{Arial}      % Özet Metinleri (Görsele uygun Sans-Serif)
-\newfontfamily\scdmetafont{Arial}            % Metadata (Sağ Sütun)
-\newfontfamily\scdbodyfont{Georgia}              % ANA METİN (Body) FONTU
-\newcommand{\scdbodysize}{\fontsize{11}{13}\selectfont} % ANA METİN PUNTO (Punto / Satır Aralığı)
-\newfontfamily\scdcaptionfont{Arial}      % Tablo ve Şekil Başlıkları
-\newfontfamily\scdtablefont{Georgia}         % TABLO İÇİ FONTU
+% Monospace font - TeX Gyre Cursor (Courier-like, replaces Consolas)
+\setmonofont{TeX Gyre Cursor}
+
+% --- FONT VE PUNTO KONTROL PANELİ (Cross-Platform Compatible) ---
+\newfontfamily\scdtitleTRfont{TeX Gyre Heros}     % Türkçe Başlık (Title TR)
+\newfontfamily\scdtitleENfont{TeX Gyre Heros}     % İngilizce Başlık (Title EN)
+\newfontfamily\scdauthorfont{TeX Gyre Heros}     % Yazar İsimleri
+\newfontfamily\scdaffilfont{TeX Gyre Heros}     % Kurum Bilgileri
+\newfontfamily\scdabstractfont{TeX Gyre Heros}      % Özet Metinleri
+\newfontfamily\scdmetafont{TeX Gyre Heros}            % Metadata (Sağ Sütun)
+\newfontfamily\scdbodyfont{TeX Gyre Termes}              % ANA METİN (Body) FONTU
+\newcommand{\scdbodysize}{\fontsize{11}{13}\selectfont} % ANA METİN PUNTO
+\newfontfamily\scdcaptionfont{TeX Gyre Heros}      % Tablo ve Şekil Başlıkları
+\newfontfamily\scdtablefont{TeX Gyre Termes}         % TABLO İÇİ FONTU
 \newcommand{\scdtablesize}{\fontsize{10}{12}\selectfont} % TABLO İÇİ PUNTO
-\newfontfamily\scdheaderfont{Arial} % Sayfa Üst Bilgileri (Header/Footer)
-\newfontfamily\journalfont{Times New Roman}    % Dergi Adı (Header Logosu)
+\newfontfamily\scdheaderfont{TeX Gyre Heros} % Sayfa Üst Bilgileri
+\newfontfamily\journalfont{TeX Gyre Termes}    % Dergi Adı (Header Logosu)
 % --------------------------------------------------------------------------
 
 

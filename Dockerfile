@@ -1,7 +1,8 @@
 # Use Node.js with Debian for LaTeX support
 FROM node:20-bookworm-slim
 
-# Install TeX Live with XeLaTeX, required packages, and Microsoft fonts
+# Install TeX Live with XeLaTeX and required packages
+# TeX Gyre fonts are included in texlive-fonts-recommended
 RUN apt-get update && apt-get install -y --no-install-recommends \
     texlive-xetex \
     texlive-fonts-recommended \
@@ -10,15 +11,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     texlive-lang-european \
     texlive-science \
     fontconfig \
-    wget \
-    cabextract \
-    xfonts-utils \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install Microsoft Core Fonts (Georgia, Arial, Times New Roman, etc.)
-RUN echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends ttf-mscorefonts-installer \
     && rm -rf /var/lib/apt/lists/* \
     && fc-cache -fv
 
