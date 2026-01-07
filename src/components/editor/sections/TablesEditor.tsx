@@ -66,15 +66,15 @@ export function TablesEditor({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm text-muted-foreground">
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-muted/20 p-3 rounded-lg border border-border/50">
+        <div className="flex-1 min-w-[200px]">
+          <p className="text-sm text-muted-foreground leading-snug">
             Tablolar bölümlere eklenir ve PDF'de otomatik olarak formatlanır.
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <Select value={selectedSection} onValueChange={setSelectedSection}>
-            <SelectTrigger className="w-[200px]">
+            <SelectTrigger className="w-[150px] h-9">
               <SelectValue placeholder="Bölüm seçin" />
             </SelectTrigger>
             <SelectContent>
@@ -86,7 +86,9 @@ export function TablesEditor({
             </SelectContent>
           </Select>
           <Button
-            variant="outline"
+            size="sm"
+            variant="default"
+            className="bg-primary hover:bg-primary/90 h-9 shrink-0"
             onClick={() => selectedSection && onAddTable(selectedSection)}
             disabled={!selectedSection}
           >
