@@ -99,7 +99,7 @@ function generateAuthorLine(authors: Article['metadata']['authors']): string {
         const orcidLink = author.orcid
             ? ` \\href{https://orcid.org/${author.orcid}}{\\SCDORCIDIcon}`
             : '';
-        const separator = index === authors.length - 1 ? '' : (index === authors.length - 2 ? ' ve ' : ' ');
+        const separator = index === authors.length - 1 ? '' : ', ';
         return `${escapeLatex(author.name)}${sup}${orcidLink}${separator}`;
     }).join('');
 }
