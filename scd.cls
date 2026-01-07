@@ -24,32 +24,34 @@
 % =========================================================
 \RequirePackage{fontspec}
 
-% Use Latin Modern fonts (always available in TeX Live)
-% These are the standard LaTeX fonts, high quality and professional
+% Use Liberation fonts (metrically compatible with Microsoft fonts)
+% Liberation Serif = Times New Roman / Georgia equivalent
+% Liberation Sans = Arial equivalent
+% DejaVu Sans Mono = Consolas equivalent
 
-% Main text font - Latin Modern Roman (Times-like)
-\setmainfont{Latin Modern Roman}
+% Main text font - Liberation Serif (elegant serif, like Georgia/Times)
+\setmainfont{Liberation Serif}
 
-% Sans-serif font - Latin Modern Sans
-\setsansfont{Latin Modern Sans}
+% Sans-serif font - Liberation Sans (like Arial)
+\setsansfont{Liberation Sans}
 
-% Monospace font - Latin Modern Mono
-\setmonofont{Latin Modern Mono}
+% Monospace font - DejaVu Sans Mono (like Consolas)
+\setmonofont{DejaVu Sans Mono}
 
 % --- FONT VE PUNTO KONTROL PANELİ (Cross-Platform Compatible) ---
-\newfontfamily\scdtitleTRfont{Latin Modern Sans}     % Türkçe Başlık (Title TR)
-\newfontfamily\scdtitleENfont{Latin Modern Sans}     % İngilizce Başlık (Title EN)
-\newfontfamily\scdauthorfont{Latin Modern Sans}     % Yazar İsimleri
-\newfontfamily\scdaffilfont{Latin Modern Sans}     % Kurum Bilgileri
-\newfontfamily\scdabstractfont{Latin Modern Sans}      % Özet Metinleri
-\newfontfamily\scdmetafont{Latin Modern Sans}            % Metadata (Sağ Sütun)
-\newfontfamily\scdbodyfont{Latin Modern Roman}              % ANA METİN (Body) FONTU
+\newfontfamily\scdtitleTRfont{Liberation Sans}     % Türkçe Başlık (Title TR)
+\newfontfamily\scdtitleENfont{Liberation Sans}     % İngilizce Başlık (Title EN)
+\newfontfamily\scdauthorfont{Liberation Sans}     % Yazar İsimleri
+\newfontfamily\scdaffilfont{Liberation Sans}     % Kurum Bilgileri
+\newfontfamily\scdabstractfont{Liberation Sans}      % Özet Metinleri
+\newfontfamily\scdmetafont{Liberation Sans}            % Metadata (Sağ Sütun)
+\newfontfamily\scdbodyfont{Liberation Serif}              % ANA METİN (Body) FONTU
 \newcommand{\scdbodysize}{\fontsize{11}{13}\selectfont} % ANA METİN PUNTO
-\newfontfamily\scdcaptionfont{Latin Modern Sans}      % Tablo ve Şekil Başlıkları
-\newfontfamily\scdtablefont{Latin Modern Roman}         % TABLO İÇİ FONTU
+\newfontfamily\scdcaptionfont{Liberation Sans}      % Tablo ve Şekil Başlıkları
+\newfontfamily\scdtablefont{Liberation Serif}         % TABLO İÇİ FONTU
 \newcommand{\scdtablesize}{\fontsize{10}{12}\selectfont} % TABLO İÇİ PUNTO
-\newfontfamily\scdheaderfont{Latin Modern Sans} % Sayfa Üst Bilgileri
-\newfontfamily\journalfont{Latin Modern Roman}    % Dergi Adı (Header Logosu)
+\newfontfamily\scdheaderfont{Liberation Sans} % Sayfa Üst Bilgileri
+\newfontfamily\journalfont{Liberation Serif}    % Dergi Adı (Header Logosu)
 % --------------------------------------------------------------------------
 
 

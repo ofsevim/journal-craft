@@ -1,8 +1,7 @@
 # Use Node.js with Debian for LaTeX support
 FROM node:20-bookworm-slim
 
-# Install TeX Live with XeLaTeX and required packages
-# Latin Modern fonts are included in lmodern package
+# Install TeX Live with XeLaTeX and high-quality fonts
 RUN apt-get update && apt-get install -y --no-install-recommends \
     texlive-xetex \
     texlive-fonts-recommended \
@@ -11,6 +10,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     texlive-lang-european \
     texlive-science \
     lmodern \
+    fonts-liberation \
+    fonts-dejavu \
     fontconfig \
     && rm -rf /var/lib/apt/lists/* \
     && fc-cache -fv
