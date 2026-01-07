@@ -160,16 +160,16 @@ export function TablesEditor({
                 </div>
 
                 {/* Table Grid container with horizontal scroll */}
-                <div className="border border-border rounded-lg overflow-hidden flex flex-col">
-                  <ScrollArea className="w-full">
-                    <table className="min-w-full border-collapse">
+                <div className="border border-border rounded-lg overflow-hidden">
+                  <div className="overflow-x-auto overflow-y-hidden custom-scrollbar pb-2">
+                    <table className="w-full border-collapse min-w-[800px]">
                       <thead>
                         <tr className="bg-muted">
                           <th className="w-10 border-r border-b border-border" />
                           {table.columns.map((col, colIndex) => (
                             <th
                               key={colIndex}
-                              className="border-r border-b border-border last:border-r-0 min-w-[150px]"
+                              className="border-r border-b border-border last:border-r-0 min-w-[160px]"
                             >
                               <div className="flex items-center">
                                 <Input
@@ -233,8 +233,7 @@ export function TablesEditor({
                         ))}
                       </tbody>
                     </table>
-                    <ScrollBar orientation="horizontal" />
-                  </ScrollArea>
+                  </div>
 
                   <div className="bg-muted/50 px-3 py-2 border-t border-border">
                     <Button
