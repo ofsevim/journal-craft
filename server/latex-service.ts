@@ -163,7 +163,14 @@ function generateTable(table: { caption: string; layout: string; columns: string
 
     // Header row
     latex += '\\toprule\n';
-    latex += table.columns.map(col => `\\textbf{${escapeLatex(col)}}`).join(' & ') + ' \\\\\n';
+    latex += table.columns.map(col => {
+        const escaped = escapeLatex(col);
+        if (escaped.includes('\n') || escaped.includes('\r')) {
+            const lines = escaped.split(/\r?\n/).map(line => `\\textbf{${line}}`).join(' \\\\ ');
+            return `\\makecell[l]{${lines}}`;
+        }
+        return `\\textbf{${escaped}}`;
+    }).join(' & ') + ' \\\\\n';
     latex += '\\midrule\n';
 
     // Data rows
@@ -171,8 +178,8 @@ function generateTable(table: { caption: string; layout: string; columns: string
         table.rows.forEach(row => {
             latex += row.map(cell => {
                 const escaped = escapeLatex(cell);
-                return escaped.includes('\n')
-                    ? `\\makecell[l]{${escaped.replace(/\n/g, ' \\\\ ')}}`
+                return (escaped.includes('\n') || escaped.includes('\r'))
+                    ? `\\makecell[l]{${escaped.replace(/\r?\n/g, ' \\\\ ')}}`
                     : escaped;
             }).join(' & ') + ' \\\\\n';
         });
