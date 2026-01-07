@@ -86,6 +86,7 @@
 \RequirePackage{threeparttable} % Tablo altı notlar için
 \RequirePackage{hyperref}
 \RequirePackage{float}
+\RequirePackage{makecell}
 \RequirePackage{lastpage} % For end page detection
 
 % =========================================================

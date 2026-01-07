@@ -206,12 +206,13 @@ export function TablesEditor({
                                   className="border-r border-b border-border/80 last:border-r-0 group relative"
                                 >
                                   <div className="flex items-center px-1">
-                                    <Input
+                                    <Textarea
                                       value={col}
                                       onChange={(e) =>
                                         updateColumnHeader(table.sectionId, table, colIndex, e.target.value)
                                       }
-                                      className="border-0 bg-transparent font-bold text-xs h-10 rounded-none focus-visible:ring-0 px-2"
+                                      rows={Math.max(1, col.split('\n').length)}
+                                      className="border-0 bg-transparent font-bold text-xs h-auto min-h-[40px] py-2.5 rounded-none focus-visible:ring-0 px-2 w-full resize-none overflow-hidden leading-tight"
                                       placeholder="Sütun Adı"
                                     />
                                     <Button
@@ -282,12 +283,13 @@ export function TablesEditor({
                                     className="border-r border-border/60 last:border-r-0"
                                     style={{ width: colWidth, minWidth: colWidth }}
                                   >
-                                    <Input
+                                    <Textarea
                                       value={cell}
                                       onChange={(e) =>
                                         updateCell(table.sectionId, table, rowIndex, colIndex, e.target.value)
                                       }
-                                      className="border-0 bg-transparent text-sm h-11 rounded-none focus-visible:ring-1 focus-visible:ring-primary/20 px-3 w-full"
+                                      rows={Math.max(1, cell.split('\n').length)}
+                                      className="border-0 bg-transparent text-sm min-h-[44px] h-full py-3 rounded-none focus-visible:ring-1 focus-visible:ring-primary/20 px-3 w-full resize-none overflow-hidden leading-snug"
                                       placeholder="..."
                                     />
                                   </td>

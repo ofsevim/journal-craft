@@ -169,7 +169,12 @@ function generateTable(table: { caption: string; layout: string; columns: string
     // Data rows
     if (table.rows && table.rows.length > 0) {
         table.rows.forEach(row => {
-            latex += row.map(cell => escapeLatex(cell)).join(' & ') + ' \\\\\n';
+            latex += row.map(cell => {
+                const escaped = escapeLatex(cell);
+                return escaped.includes('\n')
+                    ? `\\makecell[l]{${escaped.replace(/\n/g, ' \\\\ ')}}`
+                    : escaped;
+            }).join(' & ') + ' \\\\\n';
         });
     }
 
