@@ -160,30 +160,30 @@ export function TablesEditor({
                 </div>
 
                 {/* Table Grid container with horizontal scroll */}
-                <div className="border border-border rounded-lg overflow-hidden">
-                  <div className="overflow-x-auto overflow-y-hidden custom-scrollbar pb-2">
-                    <table className="w-full border-collapse min-w-[800px]">
+                <div className="border border-border rounded-lg overflow-hidden bg-card">
+                  <div className="overflow-x-auto custom-scrollbar pb-4">
+                    <table className="w-max min-w-full border-collapse">
                       <thead>
-                        <tr className="bg-muted">
+                        <tr className="bg-muted/50">
                           <th className="w-10 border-r border-b border-border" />
                           {table.columns.map((col, colIndex) => (
                             <th
                               key={colIndex}
-                              className="border-r border-b border-border last:border-r-0 min-w-[160px]"
+                              className="border-r border-b border-border last:border-r-0 min-w-[150px]"
                             >
-                              <div className="flex items-center">
+                              <div className="flex items-center px-1">
                                 <Input
                                   value={col}
                                   onChange={(e) =>
                                     updateColumnHeader(table.sectionId, table, colIndex, e.target.value)
                                   }
-                                  className="border-0 bg-transparent font-semibold text-sm h-10 rounded-none focus-visible:ring-0"
+                                  className="border-0 bg-transparent font-semibold text-sm h-9 rounded-none focus-visible:ring-0 px-2"
                                   placeholder="Başlık"
                                 />
                                 <Button
                                   variant="ghost"
                                   size="icon"
-                                  className="h-8 w-8 text-muted-foreground hover:text-destructive shrink-0"
+                                  className="h-7 w-7 text-muted-foreground hover:text-destructive shrink-0"
                                   onClick={() => removeColumn(table.sectionId, table, colIndex)}
                                 >
                                   <MinusCircle className="w-3.5 h-3.5" />
@@ -191,14 +191,14 @@ export function TablesEditor({
                               </div>
                             </th>
                           ))}
-                          <th className="w-10 border-b border-border bg-muted/30">
+                          <th className="w-12 border-b border-border bg-muted/30 sticky right-0 z-10">
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="h-8 w-8 text-muted-foreground hover:text-primary"
+                              className="h-8 w-8 text-primary hover:bg-primary/10 mx-auto"
                               onClick={() => addColumn(table.sectionId, table)}
                             >
-                              <PlusCircle className="w-4 h-4" />
+                              <PlusCircle className="w-5 h-5" />
                             </Button>
                           </th>
                         </tr>
@@ -206,7 +206,7 @@ export function TablesEditor({
                       <tbody>
                         {table.rows.map((row, rowIndex) => (
                           <tr key={rowIndex} className="border-b border-border last:border-b-0">
-                            <td className="border-r border-border bg-muted/50 text-center">
+                            <td className="border-r border-border bg-muted/30 text-center">
                               <Button
                                 variant="ghost"
                                 size="icon"
@@ -223,12 +223,12 @@ export function TablesEditor({
                                   onChange={(e) =>
                                     updateCell(table.sectionId, table, rowIndex, colIndex, e.target.value)
                                   }
-                                  className="border-0 bg-transparent text-sm h-10 rounded-none focus-visible:ring-0"
+                                  className="border-0 bg-transparent text-sm h-10 rounded-none focus-visible:ring-0 px-3"
                                   placeholder="—"
                                 />
                               </td>
                             ))}
-                            <td className="w-10 bg-muted/10" />
+                            <td className="w-12 bg-muted/10 sticky right-0" />
                           </tr>
                         ))}
                       </tbody>
