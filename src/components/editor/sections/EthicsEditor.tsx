@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Shield, AlertCircle } from 'lucide-react';
 import { EthicsStatement, ValidationError } from '@/types/article';
-import { cn } from '@/lib/utils';
 
 interface EthicsEditorProps {
   ethics: EthicsStatement;
@@ -13,8 +12,6 @@ interface EthicsEditorProps {
 }
 
 export function EthicsEditor({ ethics, validationErrors, onUpdate }: EthicsEditorProps) {
-  const getFieldError = (field: string) => validationErrors.find(e => e.field === field);
-
   const handleTextChange = (value: string) => {
     onUpdate({
       ethicsText: value,

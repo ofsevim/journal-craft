@@ -235,7 +235,7 @@ ${corrAuthor ? `\\correspondingauthor{${escapeLatex(corrAuthor.name)}}{${corrAut
 \\keywordsEN{${a.keywordsEnglish?.join(', ') || ''}}
 
 ${m.doi ? `\\doi{${escapeLatex(m.doi)}}` : ''}
-${e.hasEthicsApproval && e.ethicsText ? `\\ethicsTR{${escapeLatex(e.ethicsText)}}` : ''}
+${e.hasEthicsApproval && e.ethicsText ? `\\ethicsTR{${escapeLatex(e.ethicsText)}}\n\\ethicsEN{${escapeLatex(e.ethicsText)}}` : ''}
 
 \\abstractTR{${escapeLatex(a.abstractTurkish)}}
 \\abstractEN{${escapeLatex(a.abstractEnglish)}}
