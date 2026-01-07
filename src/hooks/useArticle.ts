@@ -200,6 +200,7 @@ export function useArticle() {
       layout: 'full-width',
       columns: ['Sütun 1', 'Sütun 2', 'Sütun 3'],
       rows: [['', '', '']],
+      columnWidths: [180, 180, 180],
       notes: '',
     };
     setArticle(prev => ({

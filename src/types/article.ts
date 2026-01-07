@@ -50,6 +50,7 @@ export interface TableData {
   layout: 'two-column' | 'full-width';
   columns: string[];
   rows: string[][];
+  columnWidths?: number[];
   notes: string;
 }
 

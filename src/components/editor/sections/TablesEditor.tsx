@@ -31,14 +31,22 @@ export function TablesEditor({
   const addColumn = (sectionId: string, table: TableData) => {
     const newColumns = [...table.columns, `Sütun ${table.columns.length + 1}`];
     const newRows = table.rows.map(row => [...row, '']);
-    onUpdateTable(sectionId, table.id, { columns: newColumns, rows: newRows });
+    const newWidths = [...(table.columnWidths || table.columns.map(() => 180)), 180];
+    onUpdateTable(sectionId, table.id, { columns: newColumns, rows: newRows, columnWidths: newWidths });
   };
 
   const removeColumn = (sectionId: string, table: TableData, colIndex: number) => {
     if (table.columns.length <= 1) return;
     const newColumns = table.columns.filter((_, i) => i !== colIndex);
     const newRows = table.rows.map(row => row.filter((_, i) => i !== colIndex));
-    onUpdateTable(sectionId, table.id, { columns: newColumns, rows: newRows });
+    const newWidths = (table.columnWidths || table.columns.map(() => 180)).filter((_, i) => i !== colIndex);
+    onUpdateTable(sectionId, table.id, { columns: newColumns, rows: newRows, columnWidths: newWidths });
+  };
+
+  const updateColumnWidth = (sectionId: string, table: TableData, colIndex: number, width: number) => {
+    const currentWidths = table.columnWidths || table.columns.map(() => 180);
+    const newWidths = currentWidths.map((w, i) => i === colIndex ? Math.max(80, width) : w);
+    onUpdateTable(sectionId, table.id, { columnWidths: newWidths });
   };
 
   const addRow = (sectionId: string, table: TableData) => {
@@ -65,200 +73,262 @@ export function TablesEditor({
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-muted/20 p-3 rounded-lg border border-border/50">
-        <div className="flex-1 min-w-[200px]">
-          <p className="text-sm text-muted-foreground leading-snug">
-            Tablolar bölümlere eklenir ve PDF'de otomatik olarak formatlanır.
+    <div className="space-y-8 pb-12">
+      {/* Redesigned Header - Single column layout for best visibility */}
+      <div className="bg-muted/30 p-4 rounded-xl border border-border space-y-4">
+        <div className="space-y-1">
+          <h3 className="text-sm font-semibold flex items-center gap-2">
+            <PlusCircle className="w-4 h-4 text-primary" />
+            Yeni Tablo Oluştur
+          </h3>
+          <p className="text-xs text-muted-foreground">
+            Aşağıdan bir bölüm seçin ve ardından tablo ekleyin.
           </p>
         </div>
-        <div className="flex items-center gap-2 flex-wrap">
-          <Select value={selectedSection} onValueChange={setSelectedSection}>
-            <SelectTrigger className="w-[150px] h-9">
-              <SelectValue placeholder="Bölüm seçin" />
-            </SelectTrigger>
-            <SelectContent>
-              {sections.map(section => (
-                <SelectItem key={section.id} value={section.id}>
-                  {section.title || 'Başlıksız'}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <div className="flex-1 min-w-[180px]">
+            <Select value={selectedSection} onValueChange={setSelectedSection}>
+              <SelectTrigger className="h-10 bg-background">
+                <SelectValue placeholder="Bölüm seçin" />
+              </SelectTrigger>
+              <SelectContent>
+                {sections.map(section => (
+                  <SelectItem key={section.id} value={section.id}>
+                    {section.title || 'Başlıksız Bölüm'}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
           <Button
-            size="sm"
-            variant="default"
-            className="bg-primary hover:bg-primary/90 h-9 shrink-0"
+            size="default"
+            className="shrink-0 bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-6 h-10 shadow-sm"
             onClick={() => selectedSection && onAddTable(selectedSection)}
             disabled={!selectedSection}
           >
-            <Plus className="w-4 h-4 mr-1.5" />
-            Tablo Ekle
+            <Plus className="w-4 h-4 mr-2" />
+            Bölüme Tablo Ekle
           </Button>
         </div>
       </div>
 
       {allTables.length === 0 ? (
-        <div className="text-center py-16 border-2 border-dashed border-border rounded-lg">
-          <TableIcon className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-          <p className="text-muted-foreground mb-2">Henüz tablo eklenmemiş.</p>
-          <p className="text-sm text-muted-foreground mb-4">
-            Bir bölüm seçip tablo ekleyebilirsiniz.
+        <div className="text-center py-20 border-2 border-dashed border-border rounded-xl bg-muted/10">
+          <TableIcon className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
+          <h4 className="text-base font-medium text-foreground">Henüz tablo eklenmemiş</h4>
+          <p className="text-sm text-muted-foreground mt-1 max-w-xs mx-auto">
+            Makalenize veri tablosu eklemek için yukarıdaki menüyü kullanın.
           </p>
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-10">
           {allTables.map((table, tableIndex) => (
-            <Card key={table.id} className="section-card">
-              <CardHeader className="pb-4">
+            <Card key={table.id} className="section-card border-2 border-border/60 shadow-md">
+              <CardHeader className="bg-muted/20 border-b border-border/50 pb-3">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs font-medium text-muted-foreground bg-muted px-2 py-0.5 rounded">
-                      Tablo {tableIndex + 1}
-                    </span>
-                    <span className="text-xs text-muted-foreground">
-                      ({table.sectionTitle})
-                    </span>
+                  <div className="flex items-center gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                      <TableIcon className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-sm font-bold">
+                        Tablo {tableIndex + 1}
+                      </CardTitle>
+                      <p className="text-[10px] text-muted-foreground uppercase tracking-tight">
+                        Konum: {table.sectionTitle}
+                      </p>
+                    </div>
                   </div>
                   <Button
                     variant="ghost"
-                    size="sm"
-                    className="text-muted-foreground hover:text-destructive"
+                    size="icon"
+                    className="h-8 w-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
                     onClick={() => onRemoveTable(table.sectionId, table.id)}
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>
                 </div>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label className="form-label">Tablo Başlığı</Label>
+              <CardContent className="pt-6 space-y-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                      Tablo Başlığı (Otomatik Numaralanır)
+                    </Label>
                     <Input
                       value={table.caption}
+                      className="bg-muted/30 focus-visible:bg-background transition-colors"
                       onChange={(e) =>
                         onUpdateTable(table.sectionId, table.id, { caption: e.target.value })
                       }
-                      placeholder="Engellilik Algısı Alt Boyutları"
+                      placeholder="Ör: Katılımcıların demografik verileri"
                     />
                   </div>
-                  <div>
-                    <Label className="form-label">Tablo Genişliği</Label>
+                  <div className="space-y-2">
+                    <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                      Yazdırılacak Genişlik
+                    </Label>
                     <Select
                       value={table.layout}
                       onValueChange={(value: 'two-column' | 'full-width') =>
                         onUpdateTable(table.sectionId, table.id, { layout: value })
                       }
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="bg-muted/30">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="two-column">İki Sütun</SelectItem>
-                        <SelectItem value="full-width">Tam Genişlik</SelectItem>
+                        <SelectItem value="two-column">Tek Sütun (Dar)</SelectItem>
+                        <SelectItem value="full-width">Çift Sütun (Geniş/Tam sayfa)</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
 
-                {/* Table Grid container with horizontal scroll */}
-                <div className="border border-border rounded-lg overflow-hidden bg-card">
-                  <div className="overflow-x-auto custom-scrollbar pb-4">
-                    <table className="w-max min-w-full border-collapse">
-                      <thead>
-                        <tr className="bg-muted/50">
-                          <th className="w-10 border-r border-b border-border" />
-                          {table.columns.map((col, colIndex) => (
-                            <th
-                              key={colIndex}
-                              className="border-r border-b border-border last:border-r-0 min-w-[150px]"
-                            >
-                              <div className="flex items-center px-1">
-                                <Input
-                                  value={col}
-                                  onChange={(e) =>
-                                    updateColumnHeader(table.sectionId, table, colIndex, e.target.value)
-                                  }
-                                  className="border-0 bg-transparent font-semibold text-sm h-9 rounded-none focus-visible:ring-0 px-2"
-                                  placeholder="Başlık"
-                                />
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  className="h-7 w-7 text-muted-foreground hover:text-destructive shrink-0"
-                                  onClick={() => removeColumn(table.sectionId, table, colIndex)}
+                {/* Table Editor Grid */}
+                <div className="space-y-2">
+                  <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    Tablo İçeriği
+                  </Label>
+                  <div className="border border-border rounded-xl bg-background shadow-inner overflow-hidden">
+                    <div className="overflow-x-auto custom-scrollbar pb-2">
+                      <table className="w-max min-w-full border-collapse">
+                        <thead>
+                          <tr className="bg-muted/40">
+                            <th className="w-12 border-r border-b border-border/80" />
+                            {table.columns.map((col, colIndex) => {
+                              const colWidth = (table.columnWidths && table.columnWidths[colIndex]) || 180;
+                              return (
+                                <th
+                                  key={colIndex}
+                                  style={{ width: colWidth, minWidth: colWidth }}
+                                  className="border-r border-b border-border/80 last:border-r-0 group relative"
                                 >
-                                  <MinusCircle className="w-3.5 h-3.5" />
-                                </Button>
-                              </div>
-                            </th>
-                          ))}
-                          <th className="w-12 border-b border-border bg-muted/30 sticky right-0 z-10">
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8 text-primary hover:bg-primary/10 mx-auto"
-                              onClick={() => addColumn(table.sectionId, table)}
-                            >
-                              <PlusCircle className="w-5 h-5" />
-                            </Button>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {table.rows.map((row, rowIndex) => (
-                          <tr key={rowIndex} className="border-b border-border last:border-b-0">
-                            <td className="border-r border-border bg-muted/30 text-center">
+                                  <div className="flex items-center px-1">
+                                    <Input
+                                      value={col}
+                                      onChange={(e) =>
+                                        updateColumnHeader(table.sectionId, table, colIndex, e.target.value)
+                                      }
+                                      className="border-0 bg-transparent font-bold text-xs h-10 rounded-none focus-visible:ring-0 px-2"
+                                      placeholder="Sütun Adı"
+                                    />
+                                    <Button
+                                      variant="ghost"
+                                      size="icon"
+                                      className="h-8 w-8 text-muted-foreground/60 hover:text-destructive hover:bg-destructive/5 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                                      onClick={() => removeColumn(table.sectionId, table, colIndex)}
+                                    >
+                                      <MinusCircle className="w-3.5 h-3.5" />
+                                    </Button>
+                                  </div>
+
+                                  {/* Resize Handle */}
+                                  <div
+                                    className="absolute right-0 top-0 w-1 h-full cursor-col-resize hover:bg-primary/40 active:bg-primary z-20 group-hover:bg-muted-foreground/20"
+                                    onMouseDown={(e) => {
+                                      const startX = e.pageX;
+                                      const startWidth = colWidth;
+
+                                      const onMouseMove = (moveEvent: MouseEvent) => {
+                                        const newWidth = startWidth + (moveEvent.pageX - startX);
+                                        updateColumnWidth(table.sectionId, table, colIndex, newWidth);
+                                      };
+
+                                      const onMouseUp = () => {
+                                        document.removeEventListener('mousemove', onMouseMove);
+                                        document.removeEventListener('mouseup', onMouseUp);
+                                      };
+
+                                      document.addEventListener('mousemove', onMouseMove);
+                                      document.addEventListener('mouseup', onMouseUp);
+                                    }}
+                                  />
+                                </th>
+                              );
+                            })}
+                            <th className="w-14 border-b border-border/80 bg-primary/5">
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                                onClick={() => removeRow(table.sectionId, table, rowIndex)}
+                                className="h-full w-full rounded-none text-primary hover:bg-primary/10"
+                                onClick={() => addColumn(table.sectionId, table)}
+                                title="Sütun Ekle"
                               >
-                                <MinusCircle className="w-3.5 h-3.5" />
+                                <PlusCircle className="w-5 h-5" />
                               </Button>
-                            </td>
-                            {row.map((cell, colIndex) => (
-                              <td key={colIndex} className="border-r border-border last:border-r-0">
-                                <Input
-                                  value={cell}
-                                  onChange={(e) =>
-                                    updateCell(table.sectionId, table, rowIndex, colIndex, e.target.value)
-                                  }
-                                  className="border-0 bg-transparent text-sm h-10 rounded-none focus-visible:ring-0 px-3"
-                                  placeholder="—"
-                                />
-                              </td>
-                            ))}
-                            <td className="w-12 bg-muted/10 sticky right-0" />
+                            </th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                        </thead>
+                        <tbody>
+                          {table.rows.map((row, rowIndex) => (
+                            <tr key={rowIndex} className="border-b border-border/60 hover:bg-muted/10 transition-colors last:border-b-0">
+                              <td className="border-r border-border/60 bg-muted/20 text-center">
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8 text-muted-foreground/40 hover:text-destructive"
+                                  onClick={() => removeRow(table.sectionId, table, rowIndex)}
+                                >
+                                  <MinusCircle className="w-3.5 h-3.5" />
+                                </Button>
+                              </td>
+                              {row.map((cell, colIndex) => {
+                                const colWidth = (table.columnWidths && table.columnWidths[colIndex]) || 180;
+                                return (
+                                  <td
+                                    key={colIndex}
+                                    className="border-r border-border/60 last:border-r-0"
+                                    style={{ width: colWidth, minWidth: colWidth }}
+                                  >
+                                    <Input
+                                      value={cell}
+                                      onChange={(e) =>
+                                        updateCell(table.sectionId, table, rowIndex, colIndex, e.target.value)
+                                      }
+                                      className="border-0 bg-transparent text-sm h-11 rounded-none focus-visible:ring-1 focus-visible:ring-primary/20 px-3 w-full"
+                                      placeholder="..."
+                                    />
+                                  </td>
+                                );
+                              })}
+                              <td className="w-14 bg-muted/5 border-l border-border/40" />
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
 
-                  <div className="bg-muted/50 px-3 py-2 border-t border-border">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-muted-foreground hover:text-primary"
-                      onClick={() => addRow(table.sectionId, table)}
-                    >
-                      <PlusCircle className="w-4 h-4 mr-1.5" />
-                      Satır Ekle
-                    </Button>
+                    <div className="bg-muted/30 px-4 py-3 border-t border-border/60 flex items-center justify-between">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="bg-background text-foreground text-xs shadow-sm hover:bg-muted font-medium border-border/80"
+                        onClick={() => addRow(table.sectionId, table)}
+                      >
+                        <PlusCircle className="w-3.5 h-3.5 mr-2 text-primary" />
+                        Yeni Satır Ekle
+                      </Button>
+                      <p className="text-[10px] text-muted-foreground italic">
+                        Tablo {tableIndex + 1} için veri girişi yapıyorsunuz.
+                      </p>
+                    </div>
                   </div>
                 </div>
 
-                <div>
-                  <Label className="form-label">Tablo Notları (İsteğe bağlı)</Label>
+                <div className="space-y-2">
+                  <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+                    Tablo Notları / Kaynakça
+                    <span className="text-[10px] font-normal lowercase bg-muted px-1.5 rounded">(isteğe bağlı)</span>
+                  </Label>
                   <Textarea
                     value={table.notes}
                     onChange={(e) =>
                       onUpdateTable(table.sectionId, table.id, { notes: e.target.value })
                     }
-                    placeholder="Tabloya ait açıklama notları..."
-                    className="resize-none h-20"
+                    placeholder="Tablo altında görünecek açıklamaları veya veri kaynağını buraya yazın..."
+                    className="resize-none h-24 bg-muted/20 focus-visible:bg-background border-border/60"
                   />
                 </div>
               </CardContent>

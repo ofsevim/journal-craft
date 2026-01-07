@@ -10,326 +10,336 @@
 @import url('https://fonts.googleapis.com/css2?family=Charter:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap');
 
 @layer base {
-  :root {
-    /* Background hierarchy */
-    --background: 210 20% 98%;
-    --foreground: 222 47% 11%;
-    
-    /* Card surfaces */
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-    
-    /* Popover/dropdown */
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    
-    /* Primary - SCD Blue (0, 51, 102) = 210 100% 20% */
-    --primary: 210 100% 20%;
-    --primary-foreground: 210 40% 98%;
-    
-    /* Secondary - Warm paper tone */
-    --secondary: 40 30% 96%;
-    --secondary-foreground: 222 47% 20%;
-    
-    /* Muted surfaces */
-    --muted: 210 20% 94%;
-    --muted-foreground: 0 0% 31%; /* SCDTextGray (80, 80, 80) */
-    
-    /* Accent - SCD Red/Burgundy (145, 30, 30) = 0 66% 34% */
-    --accent: 0 66% 34%;
-    --accent-foreground: 0 0% 100%;
-    
-    /* Destructive */
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-    
-    /* Success - For validation */
-    --success: 142 71% 45%;
-    --success-foreground: 0 0% 100%;
-    
-    /* Warning */
-    --warning: 38 92% 50%;
-    --warning-foreground: 222 47% 11%;
-    
-    /* Borders and inputs */
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 210 100% 20%;
-    
-    --radius: 0.5rem;
-    
-    /* SCD specific tokens */
-    --scd-blue: 210 100% 20%;           /* RGB(0, 51, 102) */
-    --scd-red: 0 66% 34%;               /* RGB(145, 30, 30) */
-    --scd-light-blue: 225 47% 94%;      /* RGB(232, 237, 248) */
-    --scd-text-gray: 0 0% 31%;          /* RGB(80, 80, 80) */
-    --scd-dark-davy: 216 7% 19%;        /* RGB(44, 47, 51) */
-    --scd-citation-bg: 33 100% 95%;     /* RGB(255, 245, 230) */
-    
-    /* Editor-specific tokens */
-    --editor-bg: 0 0% 100%;
-    --editor-border: 214 32% 88%;
-    --editor-toolbar: 210 20% 97%;
-    --preview-bg: 220 14% 96%;
-    --preview-paper: 0 0% 100%;
-    
-    /* Section colors */
-    --section-header: 210 100% 20%;
-    --section-border: 0 66% 34%;
-    
-    /* Sidebar */
-    --sidebar-background: 210 100% 15%;
-    --sidebar-foreground: 210 40% 90%;
-    --sidebar-primary: 0 66% 34%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 100% 22%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 210 100% 22%;
-    --sidebar-ring: 0 66% 34%;
-  }
+    :root {
+        /* Background hierarchy */
+        --background: 210 20% 98%;
+        --foreground: 222 47% 11%;
 
-  .dark {
-    --background: 222 47% 8%;
-    --foreground: 210 40% 98%;
-    
-    --card: 222 47% 11%;
-    --card-foreground: 210 40% 98%;
-    
-    --popover: 222 47% 11%;
-    --popover-foreground: 210 40% 98%;
-    
-    --primary: 210 100% 40%;
-    --primary-foreground: 0 0% 100%;
-    
-    --secondary: 222 47% 15%;
-    --secondary-foreground: 210 40% 98%;
-    
-    --muted: 222 47% 15%;
-    --muted-foreground: 215 20% 65%;
-    
-    --accent: 0 66% 45%;
-    --accent-foreground: 0 0% 100%;
-    
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
-    
-    --border: 222 47% 18%;
-    --input: 222 47% 18%;
-    --ring: 210 100% 40%;
-    
-    --scd-blue: 210 100% 50%;
-    --scd-red: 0 66% 50%;
-    --scd-light-blue: 225 30% 20%;
-    --scd-text-gray: 0 0% 60%;
-    --scd-dark-davy: 210 10% 90%;
-    --scd-citation-bg: 33 40% 15%;
-    
-    --editor-bg: 222 47% 11%;
-    --editor-border: 222 47% 18%;
-    --editor-toolbar: 222 47% 13%;
-    --preview-bg: 222 47% 6%;
-    --preview-paper: 222 47% 11%;
-    
-    --section-header: 210 100% 60%;
-    --section-border: 0 66% 50%;
-    
-    --sidebar-background: 222 47% 6%;
-    --sidebar-foreground: 210 40% 90%;
-    --sidebar-primary: 0 66% 50%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 222 47% 12%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 222 47% 12%;
-    --sidebar-ring: 0 66% 50%;
-  }
+        /* Card surfaces */
+        --card: 0 0% 100%;
+        --card-foreground: 222 47% 11%;
+
+        /* Popover/dropdown */
+        --popover: 0 0% 100%;
+        --popover-foreground: 222 47% 11%;
+
+        /* Primary - SCD Blue (0, 51, 102) = 210 100% 20% */
+        --primary: 210 100% 20%;
+        --primary-foreground: 210 40% 98%;
+
+        /* Secondary - Warm paper tone */
+        --secondary: 40 30% 96%;
+        --secondary-foreground: 222 47% 20%;
+
+        /* Muted surfaces */
+        --muted: 210 20% 94%;
+        --muted-foreground: 0 0% 31%;
+        /* SCDTextGray (80, 80, 80) */
+
+        /* Accent - SCD Red/Burgundy (145, 30, 30) = 0 66% 34% */
+        --accent: 0 66% 34%;
+        --accent-foreground: 0 0% 100%;
+
+        /* Destructive */
+        --destructive: 0 84% 60%;
+        --destructive-foreground: 210 40% 98%;
+
+        /* Success - For validation */
+        --success: 142 71% 45%;
+        --success-foreground: 0 0% 100%;
+
+        /* Warning */
+        --warning: 38 92% 50%;
+        --warning-foreground: 222 47% 11%;
+
+        /* Borders and inputs */
+        --border: 214 32% 91%;
+        --input: 214 32% 91%;
+        --ring: 210 100% 20%;
+
+        --radius: 0.5rem;
+
+        /* SCD specific tokens */
+        --scd-blue: 210 100% 20%;
+        /* RGB(0, 51, 102) */
+        --scd-red: 0 66% 34%;
+        /* RGB(145, 30, 30) */
+        --scd-light-blue: 225 47% 94%;
+        /* RGB(232, 237, 248) */
+        --scd-text-gray: 0 0% 31%;
+        /* RGB(80, 80, 80) */
+        --scd-dark-davy: 216 7% 19%;
+        /* RGB(44, 47, 51) */
+        --scd-citation-bg: 33 100% 95%;
+        /* RGB(255, 245, 230) */
+
+        /* Editor-specific tokens */
+        --editor-bg: 0 0% 100%;
+        --editor-border: 214 32% 88%;
+        --editor-toolbar: 210 20% 97%;
+        --preview-bg: 220 14% 96%;
+        --preview-paper: 0 0% 100%;
+
+        /* Section colors */
+        --section-header: 210 100% 20%;
+        --section-border: 0 66% 34%;
+
+        /* Sidebar */
+        --sidebar-background: 210 100% 15%;
+        --sidebar-foreground: 210 40% 90%;
+        --sidebar-primary: 0 66% 34%;
+        --sidebar-primary-foreground: 0 0% 100%;
+        --sidebar-accent: 210 100% 22%;
+        --sidebar-accent-foreground: 210 40% 98%;
+        --sidebar-border: 210 100% 22%;
+        --sidebar-ring: 0 66% 34%;
+    }
+
+    .dark {
+        --background: 222 47% 8%;
+        --foreground: 210 40% 98%;
+
+        --card: 222 47% 11%;
+        --card-foreground: 210 40% 98%;
+
+        --popover: 222 47% 11%;
+        --popover-foreground: 210 40% 98%;
+
+        --primary: 210 100% 40%;
+        --primary-foreground: 0 0% 100%;
+
+        --secondary: 222 47% 15%;
+        --secondary-foreground: 210 40% 98%;
+
+        --muted: 222 47% 15%;
+        --muted-foreground: 215 20% 65%;
+
+        --accent: 0 66% 45%;
+        --accent-foreground: 0 0% 100%;
+
+        --destructive: 0 63% 31%;
+        --destructive-foreground: 210 40% 98%;
+
+        --border: 222 47% 18%;
+        --input: 222 47% 18%;
+        --ring: 210 100% 40%;
+
+        --scd-blue: 210 100% 50%;
+        --scd-red: 0 66% 50%;
+        --scd-light-blue: 225 30% 20%;
+        --scd-text-gray: 0 0% 60%;
+        --scd-dark-davy: 210 10% 90%;
+        --scd-citation-bg: 33 40% 15%;
+
+        --editor-bg: 222 47% 11%;
+        --editor-border: 222 47% 18%;
+        --editor-toolbar: 222 47% 13%;
+        --preview-bg: 222 47% 6%;
+        --preview-paper: 222 47% 11%;
+
+        --section-header: 210 100% 60%;
+        --section-border: 0 66% 50%;
+
+        --sidebar-background: 222 47% 6%;
+        --sidebar-foreground: 210 40% 90%;
+        --sidebar-primary: 0 66% 50%;
+        --sidebar-primary-foreground: 0 0% 100%;
+        --sidebar-accent: 222 47% 12%;
+        --sidebar-accent-foreground: 210 40% 98%;
+        --sidebar-border: 222 47% 12%;
+        --sidebar-ring: 0 66% 50%;
+    }
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
+    * {
+        @apply border-border;
+    }
 
-  body {
-    @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-  }
-  
-  /* SCD Typography matching scd.cls */
-  .font-scd-title {
-    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
-  }
-  
-  .font-scd-body {
-    font-family: Charter, 'Bitstream Charter', Georgia, serif;
-  }
-  
-  .font-scd-journal {
-    font-family: 'Hoefler Text', 'Times New Roman', Georgia, serif;
-  }
-  
-  .font-scd-meta {
-    font-family: Helvetica, 'Helvetica Neue', sans-serif;
-  }
-  
-  /* Smooth scrolling */
-  html {
-    scroll-behavior: smooth;
-  }
+    body {
+        @apply bg-background text-foreground antialiased;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    }
+
+    /* SCD Typography matching scd.cls */
+    .font-scd-title {
+        font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .font-scd-body {
+        font-family: Charter, 'Bitstream Charter', Georgia, serif;
+    }
+
+    .font-scd-journal {
+        font-family: 'Hoefler Text', 'Times New Roman', Georgia, serif;
+    }
+
+    .font-scd-meta {
+        font-family: Helvetica, 'Helvetica Neue', sans-serif;
+    }
+
+    /* Smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
 }
 
 @layer components {
-  /* Panel styling */
-  .editor-panel {
-    @apply bg-[hsl(var(--editor-bg))] border-r border-[hsl(var(--editor-border))];
-  }
-  
-  .preview-panel {
-    @apply bg-[hsl(var(--preview-bg))];
-  }
-  
-  .paper-preview {
-    @apply bg-[hsl(var(--preview-paper))] shadow-lg;
-  }
-  
-  /* Toolbar styling */
-  .editor-toolbar {
-    @apply bg-[hsl(var(--editor-toolbar))] border-b border-[hsl(var(--editor-border))] px-4 py-2;
-  }
-  
-  /* Section styling */
-  .section-card {
-    @apply bg-card rounded-lg border border-border shadow-sm transition-all duration-200;
-  }
-  
-  .section-card:hover {
-    @apply shadow-md border-[hsl(var(--section-border))];
-  }
-  
-  .section-header {
-    @apply text-[hsl(var(--section-header))] font-semibold text-sm uppercase tracking-wide;
-  }
-  
-  /* Form field styling */
-  .form-label {
-    @apply text-sm font-medium text-foreground mb-1.5 block;
-  }
-  
-  .form-hint {
-    @apply text-xs text-muted-foreground mt-1;
-  }
-  
-  /* Academic text styling */
-  .academic-title {
-    @apply font-academic text-2xl font-bold text-[hsl(var(--section-header))] leading-tight;
-  }
-  
-  .academic-abstract {
-    @apply font-academic text-base leading-relaxed text-foreground;
-  }
-  
-  /* Table editor grid */
-  .table-grid {
-    @apply border border-border rounded-md overflow-hidden;
-  }
-  
-  .table-cell {
-    @apply border-r border-b border-border p-2 text-sm bg-card;
-  }
-  
-  .table-cell:last-child {
-    @apply border-r-0;
-  }
-  
-  .table-header-cell {
-    @apply bg-muted font-medium text-foreground;
-  }
-  
-  /* Rich text editor */
-  .rich-editor {
-    @apply min-h-[200px] p-4 bg-card border border-input rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2;
-  }
-  
-  .rich-editor-content {
-    @apply font-academic text-base leading-relaxed outline-none;
-  }
-  
-  /* Status badges */
-  .status-draft {
-    @apply bg-muted text-muted-foreground;
-  }
-  
-  .status-review {
-    @apply bg-amber-100 text-amber-800;
-  }
-  
-  .status-approved {
-    @apply bg-emerald-100 text-emerald-800;
-  }
-  
-  /* Animation utilities */
-  .animate-fade-in {
-    animation: fadeIn 0.3s ease-out;
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(4px);
+
+    /* Panel styling */
+    .editor-panel {
+        @apply bg-[hsl(var(--editor-bg))] border-r border-[hsl(var(--editor-border))];
     }
-    to {
-      opacity: 1;
-      transform: translateY(0);
+
+    .preview-panel {
+        @apply bg-[hsl(var(--preview-bg))];
     }
-  }
-  
-  .animate-slide-in {
-    animation: slideIn 0.3s ease-out;
-  }
-  
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateX(-8px);
+
+    .paper-preview {
+        @apply bg-[hsl(var(--preview-paper))] shadow-lg;
     }
-    to {
-      opacity: 1;
-      transform: translateX(0);
+
+    /* Toolbar styling */
+    .editor-toolbar {
+        @apply bg-[hsl(var(--editor-toolbar))] border-b border-[hsl(var(--editor-border))] px-4 py-2;
     }
-  }
+
+    /* Section styling */
+    .section-card {
+        @apply bg-card rounded-lg border border-border shadow-sm transition-all duration-200;
+    }
+
+    .section-card:hover {
+        @apply shadow-md border-[hsl(var(--section-border))];
+    }
+
+    .section-header {
+        @apply text-[hsl(var(--section-header))] font-semibold text-sm uppercase tracking-wide;
+    }
+
+    /* Form field styling */
+    .form-label {
+        @apply text-sm font-medium text-foreground mb-1.5 block;
+    }
+
+    .form-hint {
+        @apply text-xs text-muted-foreground mt-1;
+    }
+
+    /* Academic text styling */
+    .academic-title {
+        @apply font-academic text-2xl font-bold text-[hsl(var(--section-header))] leading-tight;
+    }
+
+    .academic-abstract {
+        @apply font-academic text-base leading-relaxed text-foreground;
+    }
+
+    /* Table editor grid */
+    .table-grid {
+        @apply border border-border rounded-md overflow-hidden;
+    }
+
+    .table-cell {
+        @apply border-r border-b border-border p-2 text-sm bg-card;
+    }
+
+    .table-cell:last-child {
+        @apply border-r-0;
+    }
+
+    .table-header-cell {
+        @apply bg-muted font-medium text-foreground;
+    }
+
+    /* Rich text editor */
+    .rich-editor {
+        @apply min-h-[200px] p-4 bg-card border border-input rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2;
+    }
+
+    .rich-editor-content {
+        @apply font-academic text-base leading-relaxed outline-none;
+    }
+
+    /* Status badges */
+    .status-draft {
+        @apply bg-muted text-muted-foreground;
+    }
+
+    .status-review {
+        @apply bg-amber-100 text-amber-800;
+    }
+
+    .status-approved {
+        @apply bg-emerald-100 text-emerald-800;
+    }
+
+    /* Animation utilities */
+    .animate-fade-in {
+        animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(4px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-slide-in {
+        animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(-8px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
 }
 
 /* Scrollbar styling */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+    width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: hsl(var(--muted) / 0.5);
-  border-radius: 4px;
+    background: hsl(var(--muted) / 0.5);
+    border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--primary) / 0.4);
-  border-radius: 4px;
-  border: 2px solid transparent;
-  background-clip: content-box;
+    background: hsl(var(--primary) / 0.4);
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: content-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--primary) / 0.6);
+    background: hsl(var(--primary) / 0.6);
 }
 
 /* Explicit class for tables or other wide content */
 .custom-scrollbar::-webkit-scrollbar {
-  height: 10px;
+    height: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: hsl(var(--primary) / 0.5);
+    background: hsl(var(--primary) / 0.5);
 }
 
 .custom-scrollbar {
-  scrollbar-width: auto;
-  scrollbar-color: hsl(var(--primary) / 0.5) hsl(var(--muted) / 0.5);
+    scrollbar-width: auto;
+    scrollbar-color: hsl(var(--primary) / 0.5) hsl(var(--muted) / 0.5);
 }
