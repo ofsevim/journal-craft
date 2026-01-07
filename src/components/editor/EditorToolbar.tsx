@@ -11,8 +11,11 @@ import {
   Settings,
   Loader2,
   FileCode,
-  Globe
+  Globe,
+  Eye,
+  EyeOff
 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { Article, ValidationError } from '@/types/article';
 import { JOURNAL_CONFIG } from '@/config/journal';
 import {
@@ -45,9 +48,19 @@ interface EditorToolbarProps {
   validationErrors: ValidationError[];
   onReset: () => void;
   onLanguageChange: (language: 'TR' | 'EN') => void;
+  showPreview: boolean;
+  onTogglePreview: () => void;
 }
 
-export function EditorToolbar({ article, onValidate, validationErrors, onReset, onLanguageChange }: EditorToolbarProps) {
+export function EditorToolbar({
+  article,
+  onValidate,
+  validationErrors,
+  onReset,
+  onLanguageChange,
+  showPreview,
+  onTogglePreview
+}: EditorToolbarProps) {
   const [isCompiling, setIsCompiling] = useState(false);
   const errorCount = validationErrors.filter(e => e.severity === 'error').length;
   const warningCount = validationErrors.filter(e => e.severity === 'warning').length;
@@ -236,6 +249,24 @@ export function EditorToolbar({ article, onValidate, validationErrors, onReset, 
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <div className="h-6 w-px bg-border mx-1" />
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className={cn("w-8 h-8", !showPreview ? "text-primary bg-primary/10" : "text-muted-foreground")}
+              onClick={onTogglePreview}
+            >
+              {showPreview ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{showPreview ? 'Önizlemeyi Gizle' : 'Önizlemeyi Göster'}</p>
+          </TooltipContent>
+        </Tooltip>
 
         <Button variant="ghost" size="icon" className="w-8 h-8">
           <Settings className="w-4 h-4" />

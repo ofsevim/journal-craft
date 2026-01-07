@@ -9,6 +9,7 @@ import { EditorTab } from '@/types/article';
 
 export function EditorLayout() {
   const [activeTab, setActiveTab] = useState<EditorTab>('metadata');
+  const [showPreview, setShowPreview] = useState(true);
   const articleHook = useArticle();
 
   return (
@@ -19,6 +20,8 @@ export function EditorLayout() {
         validationErrors={articleHook.validationErrors}
         onReset={articleHook.resetArticle}
         onLanguageChange={articleHook.setLanguage}
+        showPreview={showPreview}
+        onTogglePreview={() => setShowPreview(!showPreview)}
       />
 
       <div className="flex-1 flex overflow-hidden">
@@ -29,18 +32,21 @@ export function EditorLayout() {
         />
 
         <ResizablePanelGroup direction="horizontal" className="flex-1">
-          <ResizablePanel defaultSize={50} minSize={35}>
+          <ResizablePanel defaultSize={showPreview ? 50 : 100} minSize={35}>
             <EditorContent
               activeTab={activeTab}
               articleHook={articleHook}
             />
           </ResizablePanel>
 
-          <ResizableHandle withHandle className="bg-border hover:bg-accent transition-colors" />
-
-          <ResizablePanel defaultSize={50} minSize={30}>
-            <PdfPreview article={articleHook.article} />
-          </ResizablePanel>
+          {showPreview && (
+            <>
+              <ResizableHandle withHandle className="bg-border hover:bg-accent transition-colors" />
+              <ResizablePanel defaultSize={50} minSize={30}>
+                <PdfPreview article={articleHook.article} />
+              </ResizablePanel>
+            </>
+          )}
         </ResizablePanelGroup>
       </div>
     </div>
