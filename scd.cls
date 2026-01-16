@@ -591,9 +591,9 @@
   \scdbodyfont\scdbodysize % Merkezi font ve punto ayarı burada uygulanır
   \setlength{\parskip}{3pt} % Sadece ana metin için dikey boşluk
   \setlength{\columnsep}{6mm}%
-  \begin{multicols}{#1}%
+  \begin{multicols*}{#1}%
 }{%
-  \end{multicols}%
+  \end{multicols*}%
 }
 
 % =========================================================
